@@ -10,7 +10,6 @@ public class Population {
     final int a;
     final int b;
     final int c;
-    // LinkedBlockingQueue<LifeRoutineLock.PopulationState> stateLog = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Man> newbornMen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Woman> newbornWomen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Integer> deadMen = new LinkedBlockingQueue<>();
@@ -36,7 +35,7 @@ public class Population {
         this.c = c;
         this.id = id;
         setupPopulation(startingPopulation);
-        new LifeRoutineLock().start();
+        new LifeRoutineLock(id).start();
     }
 
     private void setupPopulation(int startingPopulation) { // creates the first people
@@ -55,11 +54,15 @@ public class Population {
     }
 
     class LifeRoutineLock extends Thread {
+        public LifeRoutineLock(int s) {
+            super("LifeRoutineLock-" + s);
+        }
+
         public void run() {
-            new LifeRoutineMen().start();
-            new LifeRoutineWomen().start();
-            new EquivalentExchangeMan().start();
-            new EquivalentExchangeWoman().start();
+            new LifeRoutineMen(id).start();
+            new LifeRoutineWomen(id).start();
+            new EquivalentExchangeMan(id).start();
+            new EquivalentExchangeWoman(id).start();
             int var1 = a - (b/2) - c;
             int var2 = a - (b/2);
             int var3 = a - b;
@@ -103,6 +106,8 @@ public class Population {
     }
 
     class LifeRoutineWomen extends Thread {
+        public LifeRoutineWomen(int s) {super("LifeRoutineWomen-" + s);}
+
         public void run() {
             while (running) {
                 for (int i = 0; i < women.size(); i++) {
@@ -126,6 +131,9 @@ public class Population {
     }
 
     class LifeRoutineMen extends Thread {
+        public LifeRoutineMen(int s) {super("LifeRoutineMen-" + s);}
+
+
         public void run() {
             while (running) {
                 for (int i = 0; i < men.size(); i++) {
@@ -148,6 +156,8 @@ public class Population {
     }
 
     class EquivalentExchangeMan extends Thread {
+        public EquivalentExchangeMan(int s) {super("EquivalentExchangeMan-" + s);}
+
         public void run() {
             while (running) {
                 try {
@@ -160,6 +170,8 @@ public class Population {
     }
 
     class EquivalentExchangeWoman extends Thread {
+        public EquivalentExchangeWoman(int s) {super("EquivalentExchangeWoman-" + s);}
+
         public void run() {
             while (running) {
                 try {

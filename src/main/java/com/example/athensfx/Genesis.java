@@ -2,7 +2,6 @@ package com.example.athensfx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -15,7 +14,7 @@ public class Genesis extends Application {
     static ArrayList<Population> populations = new ArrayList<>();
     public static int selectedPopulationIndex;
     public static Population selectedPopulation = null;
-    private static HelloController controller;
+    private static WindowController controller;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,7 +24,7 @@ public class Genesis extends Application {
         stage.setScene(scene);
         stage.show();
         controller = fxmlLoader.getController();
-        new WindowUpdater().start();
+        new WindowUpdater("WindowUpdater").start();
     }
 
     public static void main(String[] args) {
@@ -40,6 +39,10 @@ public class Genesis extends Application {
     }
 
     class WindowUpdater extends Thread {
+        public WindowUpdater(String name) {
+            super(name);
+        }
+
         public void run() {
             while (true) {
                 if (selectedPopulation != null) {

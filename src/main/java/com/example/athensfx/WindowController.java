@@ -6,7 +6,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class HelloController {
+public class WindowController {
 
     @FXML
     Text aLabel;
