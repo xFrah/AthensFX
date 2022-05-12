@@ -5,6 +5,6 @@ module com.example.athensfx {
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.example.athensfx to javafx.fxml;
-    exports com.example.athensfx;
+    opens com.athens.athensfx to javafx.fxml;
+    exports com.athens.athensfx;
 }

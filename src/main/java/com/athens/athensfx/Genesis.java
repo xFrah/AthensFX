@@ -1,4 +1,4 @@
-package com.example.athensfx;
+package com.athens.athensfx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Genesis extends Application {
+public class Genesis extends Application { // TODO stop all threads if window is closed
 
     static ArrayList<Population> populations = new ArrayList<>();
     public static int selectedPopulationIndex;
@@ -18,7 +18,7 @@ public class Genesis extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Genesis.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Genesis.class.getResource("athens-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hello!");
         stage.setScene(scene);

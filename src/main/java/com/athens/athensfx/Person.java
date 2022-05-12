@@ -1,4 +1,4 @@
-package com.example.athensfx;
+package com.athens.athensfx;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -1,4 +1,4 @@
-package com.example.athensfx;
+package com.athens.athensfx;
 
 public class Woman extends Person {
 

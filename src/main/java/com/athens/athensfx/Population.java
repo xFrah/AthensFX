@@ -1,4 +1,4 @@
-package com.example.athensfx;
+package com.athens.athensfx;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -95,11 +95,6 @@ public class Population {
         }
 
         void exchangeSouls() {
-            // men.addAll(newbornMen);
-            // women.addAll(newbornWomen);
-            // System.out.println(newbornMen.size());
-            // System.out.println(newbornWomen.size());
-            // System.out.println((int) (((float) (deadMen.size() + deadWomen.size())/(float) totalDead + 0.00001)*100) + "%");
             newbornMen.drainTo(men);
             newbornWomen.drainTo(women);
         }

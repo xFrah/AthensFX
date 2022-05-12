@@ -1,4 +1,4 @@
-package com.example.athensfx;
+package com.athens.athensfx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
