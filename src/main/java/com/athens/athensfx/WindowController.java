@@ -2,10 +2,9 @@ package com.athens.athensfx;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -13,6 +12,8 @@ import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
 
+    @FXML
+    TextArea console;
     @FXML
     Text aLabel;
     @FXML
@@ -88,6 +89,7 @@ public class WindowController {
         ratioChart.getData().clear();
         ratioChart.getData().add(selectedPopulation.seriesMen);
         ratioChart.getData().add(selectedPopulation.seriesWomen);
+        console.clear();
     }
 
     void setInfo(float[] values) {
@@ -100,5 +102,10 @@ public class WindowController {
         faithfulMen.setText(String.valueOf((int) values[6]));
         fastWomen.setText(String.valueOf((int) values[7]));
         coyWomen.setText(String.valueOf((int) values[8]));
+        console.appendText("\n---- iteration " + values[0] + " ----" +
+                "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
+                "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
+                "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
+                "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
     }
 }

@@ -86,7 +86,8 @@ public class Population {
                     synchronized (Population.this) {
                         threadManDone = false;
                         threadWomanDone = false;
-                        analyze(menRatio, womenRatio); // debug function
+                        iterations++;
+                        // analyze(menRatio, womenRatio); // debug function
                         exchangeSouls();
                         Population.this.notifyAll();
                     }
