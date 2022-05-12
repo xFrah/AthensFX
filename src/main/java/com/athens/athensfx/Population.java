@@ -1,5 +1,8 @@
 package com.athens.athensfx;
 
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,6 +30,8 @@ public class Population {
     protected volatile int iterations = 0;
     protected volatile float menRatio;
     protected volatile float womenRatio;
+    protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
+    protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
 
 
     public Population(int a, int b, int c, int startingPopulation, int id) {
@@ -39,6 +44,10 @@ public class Population {
     }
 
     private void setupPopulation(int startingPopulation) { // creates the first people
+
+        seriesMen.setName("Men ratio");
+        seriesWomen.setName("Women ratios");
+
         Random r = new Random();
         for (int i = 0; i < startingPopulation/2; i++) {
             women.add(new Woman(r.nextBoolean(), this));
@@ -47,6 +56,8 @@ public class Population {
     }
 
     public float[] getInfo() {
+        seriesMen.getData().add(new LineChart.Data<Number,Number>(seriesMen.getData().size(), menRatio));
+        seriesWomen.getData().add(new LineChart.Data<Number,Number>(seriesWomen.getData().size(), womenRatio));
         return new float[]
                 {iterations, menRatio, womenRatio, men.size(), women.size(),
                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),

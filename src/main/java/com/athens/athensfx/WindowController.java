@@ -1,10 +1,15 @@
 package com.athens.athensfx;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+
+import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
 
@@ -50,6 +55,8 @@ public class WindowController {
     ProgressBar menProgressBar;
     @FXML
     ProgressBar womenProgressBar;
+    @FXML
+    LineChart<Number,Number> ratioChart;
 
     @FXML
     protected void onCreateNew() {
@@ -58,20 +65,29 @@ public class WindowController {
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
+        ratioChart.getData().clear();
+        ratioChart.getData().add(selectedPopulation.seriesMen);
+        ratioChart.getData().add(selectedPopulation.seriesWomen);
     }
 
     @FXML
     protected void onPreviousPopulation() {
         if (Genesis.selectedPopulationIndex == 0) return;
-        Genesis.selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
+        selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
+        ratioChart.getData().clear();
+        ratioChart.getData().add(selectedPopulation.seriesMen);
+        ratioChart.getData().add(selectedPopulation.seriesWomen);
     }
 
     @FXML
     protected void onNextPopulation() {
         if (Genesis.selectedPopulationIndex >= Genesis.populations.size() - 1) return;
-        Genesis.selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
+        selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
+        ratioChart.getData().clear();
+        ratioChart.getData().add(selectedPopulation.seriesMen);
+        ratioChart.getData().add(selectedPopulation.seriesWomen);
     }
 
     void setInfo(float[] values) {
@@ -85,6 +101,4 @@ public class WindowController {
         fastWomen.setText(String.valueOf((int) values[7]));
         coyWomen.setText(String.valueOf((int) values[8]));
     }
-
-
 }

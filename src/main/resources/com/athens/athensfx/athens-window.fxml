@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -124,14 +123,6 @@
         </HBox>
     </HBox>
     <Line endX="1063.0" layoutX="90.0" layoutY="61.0" startX="-90.0" />
-    <LineChart layoutX="36.0" layoutY="85.0" prefHeight="306.0" prefWidth="507.0" style="-fx-border-color: black;">
-        <xAxis>
-            <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT" />
-        </yAxis>
-    </LineChart>
     <ProgressBar fx:id="menProgressBar" layoutX="125.0" layoutY="429.0" prefHeight="25.0" prefWidth="364.0" progress="0.0" snapToPixel="false" />
     <Text layoutX="47.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MEN">
         <font>
@@ -314,4 +305,12 @@
             <Font name="Copperplate" size="15.0" />
         </font>
     </TextArea>
+   <LineChart fx:id="ratioChart" animated="false" createSymbols="false" layoutX="43.0" layoutY="74.0" prefHeight="324.0" prefWidth="500.0">
+     <xAxis>
+       <NumberAxis side="BOTTOM" />
+     </xAxis>
+     <yAxis>
+       <NumberAxis side="LEFT" />
+     </yAxis>
+   </LineChart>
 </Pane>

@@ -3,6 +3,7 @@ package com.athens.athensfx;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
                     controller.setInfo(asd);
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep(50);
+                    TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
