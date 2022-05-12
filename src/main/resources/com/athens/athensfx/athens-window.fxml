@@ -28,10 +28,10 @@
                     <Font name="Copperplate" size="20.0" />
                 </font>
                 <VBox.margin>
-                    <Insets top="15.0" />
+                    <Insets top="10.0" />
                 </VBox.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Di Monaco, Monte, Iacometta" textAlignment="CENTER" wrappingWidth="224.22152707576788">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Di Monaco, Monte, Iacometta" textAlignment="CENTER" wrappingWidth="281.2215270757679">
                 <font>
                     <Font name="Copperplate" size="14.0" />
                 </font>
@@ -144,12 +144,12 @@
         </font>
     </Text>
     <ProgressBar fx:id="womenProgressBar" layoutX="125.0" layoutY="471.0" prefHeight="25.0" prefWidth="364.0" progress="0.0" />
-    <Text fx:id="menPercentage" layoutX="504.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
+    <Text fx:id="menPercentage" layoutX="504.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0">
         <font>
             <Font name="Copperplate" size="20.0" />
         </font>
     </Text>
-    <Text fx:id="womenPercentage" layoutX="504.0" layoutY="488.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
+    <Text fx:id="womenPercentage" layoutX="504.0" layoutY="488.0" strokeType="OUTSIDE" strokeWidth="0.0">
         <font>
             <Font name="Copperplate" size="20.0" />
         </font>
@@ -262,7 +262,7 @@
         </Text>
     </VBox>
     <HBox layoutX="628.0" layoutY="110.0" prefHeight="28.0" prefWidth="200.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="a = ">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="A = ">
             <font>
                 <Font name="Copperplate" size="20.0" />
             </font>
