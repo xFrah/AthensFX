@@ -28,7 +28,7 @@ public abstract class Person {
         if (age++ >= deathAge) { // calls decrement too many times if he dies again
             state = Status.DEAD;
             decrement();
-            Pop.deaths.incrementAndGet();
+            //Pop.deaths.incrementAndGet();
             die(i);
         }
     }

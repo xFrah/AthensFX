@@ -135,65 +135,13 @@
         </font>
     </Text>
     <VBox layoutX="628.0" layoutY="141.0" prefHeight="131.0" prefWidth="146.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Alive now: ">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Faithful men:">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Philanderers:">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Coy women: ">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fast women: ">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
         <Text strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
                 <Font name="Copperplate" size="20.0" />
             </font>
         </Text>
     </VBox>
-    <VBox alignment="CENTER_LEFT" layoutX="778.0" layoutY="141.0" prefHeight="125.0" prefWidth="91.0">
-        <Text fx:id="alivePeople" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text fx:id="faithfulMen" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text fx:id="philanderers" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text fx:id="coyWomen" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-        <Text fx:id="fastWomen" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-    </VBox>
-    <HBox layoutX="628.0" layoutY="110.0" prefHeight="28.0" prefWidth="200.0">
+    <HBox alignment="TOP_CENTER" layoutX="587.0" layoutY="110.0" prefHeight="28.0" prefWidth="562.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="A = ">
             <font>
                 <Font name="Copperplate" size="20.0" />
@@ -238,7 +186,7 @@
     </Text>
     <TextArea fx:id="console" editable="false" layoutX="585.0" layoutY="420.0" prefHeight="324.0" prefWidth="569.0" style="-fx: grey;" wrapText="true">
         <font>
-            <Font name="Copperplate" size="15.0" />
+            <Font size="22.0" />
         </font>
     </TextArea>
    <LineChart fx:id="ratioChart" animated="false" createSymbols="false" layoutX="43.0" layoutY="74.0" prefHeight="324.0" prefWidth="500.0">
@@ -249,7 +197,7 @@
        <NumberAxis animated="false" autoRanging="false" minorTickCount="0" minorTickLength="0.0" side="LEFT" tickLabelGap="0.0" tickUnit="0.1" upperBound="1.0" />
      </yAxis>
    </LineChart>
-   <PieChart fx:id="pieChart" layoutX="812.0" layoutY="141.0" prefHeight="250.0" prefWidth="310.0" />
+   <PieChart fx:id="pieChart" layoutX="668.0" layoutY="140.0" prefHeight="278.0" prefWidth="391.0" />
    <Slider fx:id="refreshDelaySlider" blockIncrement="1.0" layoutX="176.0" layoutY="683.0" majorTickUnit="50.0" max="500.0" min="50.0" minorTickCount="10" onMouseReleased="#setRefreshDelay" prefHeight="37.0" prefWidth="391.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
    <Text layoutX="19.0" layoutY="698.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REFRESH DELAY (ms)">
       <font>

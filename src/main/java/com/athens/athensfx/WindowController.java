@@ -7,8 +7,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-
-import static com.athens.athensfx.Genesis.populations;
 import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
@@ -123,33 +121,32 @@ public class WindowController {
         menPercentage.setText(String.valueOf(values[1]));
         womenProgressBar.setProgress(values[2]);
         womenPercentage.setText(String.valueOf(values[2]));
-        alivePeople.setText(String.valueOf((int) (values[3] + values[4]))); // does it continue to update if we do this just once?
-        philanderers.setText(String.valueOf((int) values[5]));
-        faithfulMen.setText(String.valueOf((int) values[6]));
-        fastWomen.setText(String.valueOf((int) values[7]));
-        coyWomen.setText(String.valueOf((int) values[8]));
+        //alivePeople.setText(String.valueOf((int) (values[3] + values[4]))); // does it continue to update if we do this just once?
+        //philanderers.setText(String.valueOf((int) values[5]));
+        //faithfulMen.setText(String.valueOf((int) values[6]));
+        //fastWomen.setText(String.valueOf((int) values[7]));
+        //coyWomen.setText(String.valueOf((int) values[8]));
         pieChartUpdate();
-        if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
-            //selectedPopulation.seriesWomen.getData().remove(0);
-            //selectedPopulation.seriesMen.getData().remove(0);
-
+        int size = selectedPopulation.seriesWomen.getData().size();
+        if (size > 100) { // TODO this needs an optimization
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(size - 100);
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(size);
         }
-        // console.appendText("\n---- iteration " + values[0] + " ----" +
-        //        "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
-        //        "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
-        //        "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
-        //        "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
+        console.setText("---- iteration " + values[0] + " ----" + // todo update this with deaths and births
+                "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
+                "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
+                "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
+                "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
     }
 
     void lineChartUpdate() {
         ratioChart.getData().clear();
         ratioChart.getData().add(selectedPopulation.seriesMen);
         ratioChart.getData().add(selectedPopulation.seriesWomen);
-        if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
+        int size = selectedPopulation.seriesWomen.getData().size();
+        if (size > 100) { // TODO this needs an optimization
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(size - 100);
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(size);
         } else {
             ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(0);
             ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(100);
