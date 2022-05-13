@@ -262,7 +262,7 @@
          <Font size="14.0" />
       </font>
    </Text>
-   <TitledPane layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
+   <TitledPane fx:id="dropDown" expanded="false" layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <children>

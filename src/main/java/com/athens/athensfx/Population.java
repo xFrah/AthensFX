@@ -57,7 +57,6 @@ public class Population {
         seriesMen.setName("Men ratio");
         seriesWomen.setName("Women ratios");
 
-        Random r = new Random();
         for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {
             men.add(new Man(false, this));
         }
@@ -99,7 +98,7 @@ public class Population {
                 womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
                 womanConvenience = var1*menRatio < var2*menRatio + var3*(1 - menRatio); // var3 is there for readability
                 manConvenience = var1*womenRatio + var2*(1 - womenRatio) < a * (1 - womenRatio);
-                canGiveBirth = newbornWomen.size() + newbornMen.size() < birthLimit;
+                //canGiveBirth = newbornWomen.size() + newbornMen.size() < birthLimit;
                 // analyze(menRatio, womenRatio); // debug
                 if (threadManDone && threadWomanDone) {
                     synchronized (Population.this) {
@@ -107,11 +106,11 @@ public class Population {
                         threadWomanDone = false;
                         iterations++;
                         //analyze(menRatio, womenRatio); // debug function
-                        births.set(0); // debug
-                        deaths.set(0); // debug
+                        //births.set(0); // debug
+                        //deaths.set(0); // debug
                         exchangeSouls();
-                        prevPopNumber = men.size() + women.size();
-                        birthLimit = (int) (prevPopNumber * (growthIndex - 1.0));
+                        //prevPopNumber = men.size() + women.size();
+                        //birthLimit = (int) (prevPopNumber * (growthIndex - 1.0));
                         try {
                             TimeUnit.MILLISECONDS.sleep(iterationDelay);
                         } catch (InterruptedException e) {

@@ -71,6 +71,8 @@ public class WindowController {
     Slider womenRatioSlider;
     @FXML
     Slider menRatioSlider;
+    @FXML
+    TitledPane dropDown;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -84,6 +86,7 @@ public class WindowController {
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
         populationChange();
+        dropDown.setExpanded(false);
     }
 
     @FXML
