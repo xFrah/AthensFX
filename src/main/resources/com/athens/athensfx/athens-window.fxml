@@ -262,7 +262,7 @@
          <Font size="14.0" />
       </font>
    </Text>
-   <TitledPane expanded="false" layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
+   <TitledPane layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <children>
@@ -289,8 +289,8 @@
                      <Font size="18.0" />
                   </font>
                </Text>
-               <Slider layoutX="127.0" layoutY="102.0" minorTickCount="10" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-               <Slider layoutX="127.0" layoutY="145.0" minorTickCount="10" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+               <Slider fx:id="menRatioSlider" layoutX="127.0" layoutY="102.0" minorTickCount="10" onMouseReleased="#setMenRatioSlider" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+               <Slider fx:id="womenRatioSlider" layoutX="127.0" layoutY="145.0" minorTickCount="10" onMouseReleased="#setWomenRatioSlider" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                <Text layoutX="13.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Faithful men" wrappingWidth="101.3017578125">
                   <font>
                      <Font size="18.0" />

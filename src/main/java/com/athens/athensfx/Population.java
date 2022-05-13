@@ -14,6 +14,7 @@ public class Population {
     final int a;
     final int b;
     final int c;
+    public boolean canGiveBirth;
     protected LinkedBlockingQueue<Man> newbornMen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Woman> newbornWomen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Integer> deadMen = new LinkedBlockingQueue<>();
@@ -34,7 +35,11 @@ public class Population {
     protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
     protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
     public float growthIndex = 1.1f;
+    AtomicInteger births = new AtomicInteger();
+    AtomicInteger deaths = new AtomicInteger();
     public int iterationDelay = 0;
+    public int prevPopNumber;
+    public int birthLimit = (int) (prevPopNumber*(growthIndex - 1));
 
 
     public Population(int a, int b, int c, int startingPopulation, int id) {
@@ -42,6 +47,7 @@ public class Population {
         this.b = b;
         this.c = c;
         this.id = id;
+        this.prevPopNumber = startingPopulation;
         setupPopulation(startingPopulation);
         new LifeRoutineLock(id).start();
     }
@@ -85,13 +91,19 @@ public class Population {
                 womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
                 womanConvenience = var1*menRatio < var2*menRatio + var3*(1 - menRatio); // var3 is there for readability
                 manConvenience = var1*womenRatio + var2*(1 - womenRatio) < a * (1 - womenRatio);
+                canGiveBirth = newbornWomen.size() + newbornMen.size() < birthLimit;
+                // analyze(menRatio, womenRatio); // debug
                 if (threadManDone && threadWomanDone) {
                     synchronized (Population.this) {
                         threadManDone = false;
                         threadWomanDone = false;
                         iterations++;
-                        // analyze(menRatio, womenRatio); // debug function
+                        //analyze(menRatio, womenRatio); // debug function
+                        births.set(0); // debug
+                        deaths.set(0); // debug
                         exchangeSouls();
+                        prevPopNumber = men.size() + women.size();
+                        birthLimit = (int) (prevPopNumber * (growthIndex - 1.0));
                         try {
                             TimeUnit.MILLISECONDS.sleep(iterationDelay);
                         } catch (InterruptedException e) {
@@ -111,7 +123,12 @@ public class Population {
                     "\n- Normals(M, F): " + faithfulMen + ", " + coyWomen + " = " + (faithfulMen.get() + coyWomen.get()) +
                     "\n- Hornies(M, F): " + philanderers + ", " + fastWomen + " = " + (philanderers.get() + fastWomen.get()) +
                     "\n- Ratio: " + menRatio + ", " + womenRatio +
-                    "\n- Dead: " + (deadMen.size() + deadWomen.size()));
+                    "\n- Dead: " + (deaths.get()) +
+                    "\n- DeathQueue: " + (deadMen.size() + deadWomen.size()) +
+                    "\n- GrowthIndex: " + growthIndex +
+                    "\n- Births: " + (births.get()) +
+                    "\n- BirthQueue: " + (newbornWomen.size() + newbornMen.size()) +
+                    "\n- canGiveBirth: " + canGiveBirth);
         }
 
         void exchangeSouls() {

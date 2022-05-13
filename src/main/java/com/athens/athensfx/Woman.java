@@ -21,10 +21,13 @@ public class Woman extends Person {
 
     private void giveBirth() throws InterruptedException {
         state = Status.SINGLE;
-        if (seedOfLife.nextBoolean()) {
-            birth(new Man(Pop.manConvenience, Pop));
-        } else {
-            birth(new Woman(Pop.womanConvenience, Pop));
+        if (Pop.canGiveBirth) {
+            Pop.births.incrementAndGet();
+            if (seedOfLife.nextBoolean()) {
+                birth(new Man(Pop.manConvenience, Pop));
+            } else {
+                birth(new Woman(Pop.womanConvenience, Pop));
+            }
         }
     }
 

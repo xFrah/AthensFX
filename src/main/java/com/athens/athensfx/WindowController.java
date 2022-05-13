@@ -3,12 +3,12 @@ package com.athens.athensfx;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
+import static com.athens.athensfx.Genesis.populations;
 import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
@@ -67,6 +67,10 @@ public class WindowController {
     Slider refreshDelaySlider;
     @FXML
     PieChart pieChart;
+    @FXML
+    Slider womenRatioSlider;
+    @FXML
+    Slider menRatioSlider;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -80,6 +84,16 @@ public class WindowController {
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
         populationChange();
+    }
+
+    @FXML
+    protected void setWomenRatioSlider() {
+
+    }
+
+    @FXML
+    protected void setMenRatioSlider() {
+
     }
 
     @FXML
@@ -103,7 +117,7 @@ public class WindowController {
 
     @FXML
     void setPopulationGrowthIndex() {
-        selectedPopulation.growthIndex = (int) growthIndexSlider.getValue();
+        selectedPopulation.growthIndex = (float) growthIndexSlider.getValue();
     }
 
     @FXML
@@ -126,7 +140,7 @@ public class WindowController {
             ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
             ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
         }
-        //console.appendText("\n---- iteration " + values[0] + " ----" +
+        // console.appendText("\n---- iteration " + values[0] + " ----" +
         //        "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
         //        "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
         //        "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
