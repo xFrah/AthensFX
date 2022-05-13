@@ -1,8 +1,10 @@
 package com.athens.athensfx;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
@@ -25,6 +27,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         stage.setScene(scene);
         stage.show();
         controller = fxmlLoader.getController();
+        controller.bakeThePie();
         new WindowUpdater("WindowUpdater").start();
     }
 
@@ -40,6 +43,8 @@ public class Genesis extends Application { // TODO stop all threads if window is
     }
 
     class WindowUpdater extends Thread {
+        public static int refreshDelay = 100;
+
         public WindowUpdater(String name) {
             super(name);
         }
@@ -47,11 +52,10 @@ public class Genesis extends Application { // TODO stop all threads if window is
         public void run() {
             while (true) {
                 if (selectedPopulation != null) {
-                    float[] asd = Genesis.selectedPopulation.getInfo();
-                    controller.setInfo(asd);
+                    controller.setInfo(Genesis.selectedPopulation.getInfo());
                 }
                 try {
-                    TimeUnit.MILLISECONDS.sleep(100);
+                    TimeUnit.MILLISECONDS.sleep(refreshDelay);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

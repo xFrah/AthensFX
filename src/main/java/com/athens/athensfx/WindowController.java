@@ -1,11 +1,12 @@
 package com.athens.athensfx;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.ValueAxis;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 import static com.athens.athensfx.Genesis.selectedPopulation;
@@ -58,6 +59,19 @@ public class WindowController {
     ProgressBar womenProgressBar;
     @FXML
     LineChart<Number,Number> ratioChart;
+    @FXML
+    Slider iterationDelaySlider;
+    @FXML
+    Slider growthIndexSlider;
+    @FXML
+    Slider refreshDelaySlider;
+    @FXML
+    PieChart pieChart;
+    PieChart.Data p1 = new PieChart.Data("Faithful", 0);
+    PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
+    PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
+    PieChart.Data p4 = new PieChart.Data("FastWoman", 0);
+
 
     @FXML
     protected void onCreateNew() {
@@ -65,31 +79,36 @@ public class WindowController {
         aLabel.setText(a.getText());
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
-        selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
-        ratioChart.getData().clear();
-        ratioChart.getData().add(selectedPopulation.seriesMen);
-        ratioChart.getData().add(selectedPopulation.seriesWomen);
+        populationChange();
     }
 
     @FXML
     protected void onPreviousPopulation() {
         if (Genesis.selectedPopulationIndex == 0) return;
         selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
-        selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
-        ratioChart.getData().clear();
-        ratioChart.getData().add(selectedPopulation.seriesMen);
-        ratioChart.getData().add(selectedPopulation.seriesWomen);
+        populationChange();
     }
 
     @FXML
     protected void onNextPopulation() {
         if (Genesis.selectedPopulationIndex >= Genesis.populations.size() - 1) return;
         selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
-        selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
-        ratioChart.getData().clear();
-        ratioChart.getData().add(selectedPopulation.seriesMen);
-        ratioChart.getData().add(selectedPopulation.seriesWomen);
-        console.clear();
+        populationChange();
+    }
+
+    @FXML
+    void setPopulationIterationDelay() {
+        selectedPopulation.iterationDelay = (int) iterationDelaySlider.getValue();
+    }
+
+    @FXML
+    void setPopulationGrowthIndex() {
+        selectedPopulation.growthIndex = (int) growthIndexSlider.getValue();
+    }
+
+    @FXML
+    void setRefreshDelay() {
+        Genesis.WindowUpdater.refreshDelay = (int) refreshDelaySlider.getValue();
     }
 
     void setInfo(float[] values) {
@@ -97,15 +116,47 @@ public class WindowController {
         menPercentage.setText(String.valueOf(values[1]));
         womenProgressBar.setProgress(values[2]);
         womenPercentage.setText(String.valueOf(values[2]));
-        alivePeople.setText(String.valueOf((int) (values[3] + values[4])));
+        alivePeople.setText(String.valueOf((int) (values[3] + values[4]))); // does it continue to update if we do this just once?
         philanderers.setText(String.valueOf((int) values[5]));
         faithfulMen.setText(String.valueOf((int) values[6]));
         fastWomen.setText(String.valueOf((int) values[7]));
         coyWomen.setText(String.valueOf((int) values[8]));
-        console.appendText("\n---- iteration " + values[0] + " ----" +
-                "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
-                "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
-                "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
-                "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
+        pieChartUpdate();
+        //if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
+            //((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
+            //((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
+        //}
+        //console.appendText("\n---- iteration " + values[0] + " ----" +
+        //        "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
+        //        "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
+        //        "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
+        //        "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
     }
+
+    void lineChartUpdate() {
+        ratioChart.getData().clear();
+        ratioChart.getData().add(selectedPopulation.seriesMen);
+        ratioChart.getData().add(selectedPopulation.seriesWomen);
+    }
+
+    void populationChange() {
+        console.clear();
+        lineChartUpdate();
+        selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
+        iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
+        growthIndexSlider.setValue(selectedPopulation.growthIndex);
+    }
+
+    void pieChartUpdate() {
+        p1.setPieValue(selectedPopulation.faithfulMen.get());
+        p2.setPieValue(selectedPopulation.philanderers.get());
+        p3.setPieValue(selectedPopulation.coyWomen.get());
+        p4.setPieValue(selectedPopulation.fastWomen.get());
+    }
+
+
+    public void bakeThePie() {
+        pieChart.setData(FXCollections.observableArrayList(p1, p2, p3, p4));
+    }
+
 }

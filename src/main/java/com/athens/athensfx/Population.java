@@ -5,6 +5,7 @@ import javafx.scene.chart.XYChart;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Population {
@@ -32,6 +33,8 @@ public class Population {
     protected volatile float womenRatio;
     protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
     protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
+    public float growthIndex = 1.1f;
+    public int iterationDelay = 0;
 
 
     public Population(int a, int b, int c, int startingPopulation, int id) {
@@ -56,8 +59,8 @@ public class Population {
     }
 
     public float[] getInfo() {
-        seriesMen.getData().add(new LineChart.Data<Number,Number>(seriesMen.getData().size(), menRatio));
-        seriesWomen.getData().add(new LineChart.Data<Number,Number>(seriesWomen.getData().size(), womenRatio));
+        seriesMen.getData().add(new LineChart.Data<>(seriesMen.getData().size(), menRatio));
+        seriesWomen.getData().add(new LineChart.Data<>(seriesWomen.getData().size(), womenRatio));
         return new float[]
                 {iterations, menRatio, womenRatio, men.size(), women.size(),
                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
@@ -89,6 +92,11 @@ public class Population {
                         iterations++;
                         // analyze(menRatio, womenRatio); // debug function
                         exchangeSouls();
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(iterationDelay);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         Population.this.notifyAll();
                     }
                 }
@@ -98,7 +106,7 @@ public class Population {
 
         void analyze(float menRatio, float womenRatio) {
 
-            System.out.println("\n---- iteration " + iterations++ + " ----" +
+            System.out.println("\n---- iteration " + iterations + " ----" +
                     "\n- Population: " + (men.size() + women.size()) + "(" + men.size() + ", " + women.size() + ")" +
                     "\n- Normals(M, F): " + faithfulMen + ", " + coyWomen + " = " + (faithfulMen.get() + coyWomen.get()) +
                     "\n- Hornies(M, F): " + philanderers + ", " + fastWomen + " = " + (philanderers.get() + fastWomen.get()) +
