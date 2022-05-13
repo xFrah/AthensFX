@@ -42,25 +42,33 @@ public class Population {
     public int birthLimit = (int) (prevPopNumber*(growthIndex - 1));
 
 
-    public Population(int a, int b, int c, int startingPopulation, int id) {
+    public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.id = id;
         this.prevPopNumber = startingPopulation;
-        setupPopulation(startingPopulation);
+        setupPopulation(startingPopulation, ratioMan, ratioWoman);
         new LifeRoutineLock(id).start();
     }
 
-    private void setupPopulation(int startingPopulation) { // creates the first people
+    private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
 
         seriesMen.setName("Men ratio");
         seriesWomen.setName("Women ratios");
 
         Random r = new Random();
-        for (int i = 0; i < startingPopulation/2; i++) {
-            women.add(new Woman(r.nextBoolean(), this));
-            men.add(new Man(r.nextBoolean(), this));
+        for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {
+            men.add(new Man(false, this));
+        }
+        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioMan); i++) {
+            men.add(new Man(true, this));
+        }
+        for (int i = 0; i < ((float) startingPopulation/2)*ratioWoman; i++) {
+            women.add(new Woman(false, this));
+        }
+        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioWoman); i++) {
+            women.add(new Woman(true, this));
         }
     }
 

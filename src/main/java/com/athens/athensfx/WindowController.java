@@ -87,16 +87,6 @@ public class WindowController {
     }
 
     @FXML
-    protected void setWomenRatioSlider() {
-
-    }
-
-    @FXML
-    protected void setMenRatioSlider() {
-
-    }
-
-    @FXML
     protected void onPreviousPopulation() {
         if (Genesis.selectedPopulationIndex == 0) return;
         selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
