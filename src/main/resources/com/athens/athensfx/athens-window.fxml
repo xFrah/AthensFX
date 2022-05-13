@@ -289,8 +289,8 @@
                      <Font size="18.0" />
                   </font>
                </Text>
-               <Slider fx:id="menRatioSlider" blockIncrement="0.01" layoutX="127.0" layoutY="102.0" majorTickUnit="0.1" max="1.0" minorTickCount="0" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-               <Slider fx:id="womenRatioSlider" blockIncrement="0.01" layoutX="127.0" layoutY="145.0" majorTickUnit="0.1" max="1.0" minorTickCount="0" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+               <Slider fx:id="menRatioSlider" blockIncrement="0.01" layoutX="127.0" layoutY="102.0" majorTickUnit="0.1" max="1.0" minorTickCount="0" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="0.5" />
+               <Slider fx:id="womenRatioSlider" blockIncrement="0.01" layoutX="127.0" layoutY="145.0" majorTickUnit="0.1" max="1.0" minorTickCount="0" prefHeight="43.0" prefWidth="170.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="0.5" />
                <Text layoutX="13.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Faithful men" wrappingWidth="101.3017578125">
                   <font>
                      <Font size="18.0" />

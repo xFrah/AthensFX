@@ -132,6 +132,9 @@ public class WindowController {
         if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
             ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
             ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
+            //selectedPopulation.seriesWomen.getData().remove(0);
+            //selectedPopulation.seriesMen.getData().remove(0);
+
         }
         // console.appendText("\n---- iteration " + values[0] + " ----" +
         //        "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
@@ -144,6 +147,13 @@ public class WindowController {
         ratioChart.getData().clear();
         ratioChart.getData().add(selectedPopulation.seriesMen);
         ratioChart.getData().add(selectedPopulation.seriesWomen);
+        if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
+        } else {
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(0);
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(100);
+        }
     }
 
     void populationChange() {
