@@ -25,7 +25,7 @@
             <HBox.margin>
                 <Insets left="10.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="POPULATION ANALYSER v1" textAlignment="CENTER" wrappingWidth="284.58001708984375">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Athens v1.1" textAlignment="CENTER" wrappingWidth="146.1800537109375">
                 <font>
                     <Font name="Copperplate" size="20.0" />
                 </font>
@@ -33,7 +33,7 @@
                     <Insets top="10.0" />
                 </VBox.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Di Monaco, Monte, Iacometta" textAlignment="CENTER" wrappingWidth="281.2215270757679">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Di Monaco, Monte, Iacometta" textAlignment="CENTER" wrappingWidth="225.22152707576788">
                 <font>
                     <Font name="Copperplate" size="14.0" />
                 </font>
