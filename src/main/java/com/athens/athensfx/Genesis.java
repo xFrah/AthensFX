@@ -1,6 +1,7 @@
 package com.athens.athensfx;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -52,7 +53,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         public void run() {
             while (true) {
                 if (selectedPopulation != null) {
-                    controller.setInfo(Genesis.selectedPopulation.getInfo());
+                    Platform.runLater(() -> controller.setInfo(Genesis.selectedPopulation.getInfo()));
                 }
                 try {
                     TimeUnit.MILLISECONDS.sleep(refreshDelay);

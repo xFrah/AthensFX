@@ -122,10 +122,10 @@ public class WindowController {
         fastWomen.setText(String.valueOf((int) values[7]));
         coyWomen.setText(String.valueOf((int) values[8]));
         pieChartUpdate();
-        //if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
-            //((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
-            //((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
-        //}
+        if (selectedPopulation.seriesWomen.getData().size() > 100) { // TODO this needs an optimization
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(selectedPopulation.seriesWomen.getData().size() - 100);
+            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(selectedPopulation.seriesWomen.getData().size());
+        }
         //console.appendText("\n---- iteration " + values[0] + " ----" +
         //        "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
         //        "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
