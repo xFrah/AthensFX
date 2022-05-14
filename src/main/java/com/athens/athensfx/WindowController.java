@@ -73,6 +73,12 @@ public class WindowController {
     Slider menRatioSlider;
     @FXML
     TitledPane dropDown;
+    @FXML
+    Slider aSlider;
+    @FXML
+    Slider bSlider;
+    @FXML
+    Slider cSlider;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -161,6 +167,11 @@ public class WindowController {
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
         iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
         growthSwitch.setSelected(selectedPopulation.growth);
+        aSlider.setDisable(false);
+        bSlider.setDisable(false);
+        cSlider.setDisable(false);
+        iterationDelaySlider.setDisable(false);
+        growthSwitch.setDisable(false);
     }
 
     void pieChartUpdate() {
