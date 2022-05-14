@@ -22,16 +22,6 @@ public class WindowController {
     @FXML
     Text cLabel;
     @FXML
-    Text alivePeople;
-    @FXML
-    Text philanderers;
-    @FXML
-    Text faithfulMen;
-    @FXML
-    Text coyWomen;
-    @FXML
-    Text fastWomen;
-    @FXML
     Text selectedPopulationID;
     @FXML
     Text menPercentage;
@@ -137,14 +127,9 @@ public class WindowController {
 
     void setInfo(float[] values) {
         menProgressBar.setProgress(values[1]);
-        menPercentage.setText(String.valueOf(values[1]));
+        menPercentage.setText(Math.round(values[1] * 8) + "/8");
         womenProgressBar.setProgress(values[2]);
-        womenPercentage.setText(String.valueOf(values[2]));
-        //alivePeople.setText(String.valueOf((int) (values[3] + values[4]))); // does it continue to update if we do this just once?
-        //philanderers.setText(String.valueOf((int) values[5]));
-        //faithfulMen.setText(String.valueOf((int) values[6]));
-        //fastWomen.setText(String.valueOf((int) values[7]));
-        //coyWomen.setText(String.valueOf((int) values[8]));
+        womenPercentage.setText(Math.round(values[2] * 6) + "/6");
         pieChartUpdate();
         int size = selectedPopulation.seriesWomen.getData().size();
         if (size > 100) { // TODO this needs an optimization
