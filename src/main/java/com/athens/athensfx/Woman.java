@@ -8,10 +8,7 @@ public class Woman extends Person {
 
     public void update(int i) throws InterruptedException {
         switch (state) {
-            case DEAD -> {
-                //die(i);
-                return;
-            }
+            case DEAD -> {return;}
             case PREGNANT -> giveBirth();
             case SINGLE -> tooOld();
             case YOUNG -> tooYoung();
@@ -21,7 +18,9 @@ public class Woman extends Person {
 
     private void giveBirth() throws InterruptedException {
         state = Status.SINGLE;
-        //Pop.births.incrementAndGet();
+        if (!Pop.canBirth) return;
+            //Pop.births.incrementAndGet();
+
         if (seedOfLife.nextBoolean()) {
             birth(new Man(Pop.manConvenience, Pop));
         } else {

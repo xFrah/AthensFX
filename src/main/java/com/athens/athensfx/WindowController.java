@@ -7,6 +7,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import org.controlsfx.control.ToggleSwitch;
+
 import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
@@ -60,7 +62,7 @@ public class WindowController {
     @FXML
     Slider iterationDelaySlider;
     @FXML
-    Slider growthIndexSlider;
+    ToggleSwitch growthSwitch;
     @FXML
     Slider refreshDelaySlider;
     @FXML
@@ -107,8 +109,8 @@ public class WindowController {
     }
 
     @FXML
-    void setPopulationGrowthIndex() {
-        selectedPopulation.growthIndex = (float) growthIndexSlider.getValue();
+    void setPopulationGrowth() {
+        selectedPopulation.growth = growthSwitch.isSelected();
     }
 
     @FXML
@@ -158,7 +160,7 @@ public class WindowController {
         lineChartUpdate();
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
         iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
-        growthIndexSlider.setValue(selectedPopulation.growthIndex);
+        growthSwitch.setSelected(selectedPopulation.growth);
     }
 
     void pieChartUpdate() {

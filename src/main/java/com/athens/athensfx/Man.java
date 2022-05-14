@@ -8,10 +8,7 @@ public class Man extends Person {
 
     public void update(int i) throws InterruptedException {
         switch (state) {
-            case DEAD -> {
-                //die(i);
-                return;
-            }
+            case DEAD -> {return;}
             case YOUNG -> tooYoung();
             case SINGLE -> {
                 woo();

@@ -18,6 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="744.0" prefWidth="1153.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.athens.athensfx.WindowController">
     <HBox alignment="CENTER" prefHeight="61.0" prefWidth="790.0">
@@ -134,13 +135,6 @@
             <Font name="Copperplate" size="24.0" />
         </font>
     </Text>
-    <VBox layoutX="628.0" layoutY="141.0" prefHeight="131.0" prefWidth="146.0">
-        <Text strokeType="OUTSIDE" strokeWidth="0.0">
-            <font>
-                <Font name="Copperplate" size="20.0" />
-            </font>
-        </Text>
-    </VBox>
     <HBox alignment="TOP_CENTER" layoutX="587.0" layoutY="110.0" prefHeight="28.0" prefWidth="562.0">
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="A = ">
             <font>
@@ -204,8 +198,7 @@
          <Font size="14.0" />
       </font>
    </Text>
-   <Slider fx:id="growthIndexSlider" blockIncrement="0.01" layoutX="747.0" layoutY="590.0" majorTickUnit="0.05" max="1.5" min="1.0" minorTickCount="0" onMouseReleased="#setPopulationGrowthIndex" prefHeight="37.0" prefWidth="391.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-   <Text layoutX="590.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GROWTH INDEX">
+   <Text layoutX="590.0" layoutY="612.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GROWTH INDEX">
       <font>
          <Font size="14.0" />
       </font>
@@ -257,4 +250,5 @@
          <Font size="15.0" />
       </font>
    </TitledPane>
+   <ToggleSwitch fx:id="growthSwitch" layoutX="745.0" layoutY="597.0" onMouseReleased="#setPopulationGrowth" prefHeight="18.0" prefWidth="27.0" selected="true" />
 </Pane>
