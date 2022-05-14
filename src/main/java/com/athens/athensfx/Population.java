@@ -11,9 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Population {
     final int id;
     volatile public boolean running = true;
-    final int a;
-    final int b;
-    final int c;
+    int a;
+    int b;
+    int c;
+    int var1;
+    int var2;
+    int var3;
     public boolean canBirth;
     protected LinkedBlockingQueue<Man> newbornMen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Woman> newbornWomen = new LinkedBlockingQueue<>();
@@ -68,6 +71,12 @@ public class Population {
         }
     }
 
+    void updateParameters() {
+        var1 = a - (b/2) - c;
+        var2 = a - (b/2);
+        var3 = a - b;
+    }
+
     public float[] getInfo() {
         seriesMen.getData().add(new LineChart.Data<>(seriesMen.getData().size(), menRatio));
         seriesWomen.getData().add(new LineChart.Data<>(seriesWomen.getData().size(), womenRatio));
@@ -87,9 +96,7 @@ public class Population {
             new LifeRoutineWomen(id).start();
             new EquivalentExchangeMan(id).start();
             new EquivalentExchangeWoman(id).start();
-            int var1 = a - (b/2) - c;
-            int var2 = a - (b/2);
-            int var3 = a - b;
+            updateParameters();
             while (running) {
                 menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
                 womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
@@ -116,7 +123,6 @@ public class Population {
                 }
             }
         }
-
 
         void analyze(float menRatio, float womenRatio) {
 

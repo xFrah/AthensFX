@@ -124,6 +124,17 @@ public class WindowController {
         Genesis.WindowUpdater.refreshDelay = (int) refreshDelaySlider.getValue();
     }
 
+    @FXML
+    void setParameters() {
+        selectedPopulation.a = (int) aSlider.getValue();
+        selectedPopulation.b = (int) bSlider.getValue();
+        selectedPopulation.c = (int) cSlider.getValue();
+        selectedPopulation.updateParameters();
+        aLabel.setText(String.valueOf(selectedPopulation.a));
+        bLabel.setText(String.valueOf(selectedPopulation.b));
+        cLabel.setText(String.valueOf(selectedPopulation.c));
+    }
+
     void setInfo(float[] values) {
         menProgressBar.setProgress(values[1]);
         menPercentage.setText(String.valueOf(values[1]));
