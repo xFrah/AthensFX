@@ -170,6 +170,9 @@ public class WindowController {
         aSlider.setDisable(false);
         bSlider.setDisable(false);
         cSlider.setDisable(false);
+        aSlider.setValue(selectedPopulation.a);
+        bSlider.setValue(selectedPopulation.b);
+        cSlider.setValue(selectedPopulation.c);
         iterationDelaySlider.setDisable(false);
         growthSwitch.setDisable(false);
     }
