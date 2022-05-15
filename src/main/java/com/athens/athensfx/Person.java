@@ -25,7 +25,7 @@ public abstract class Person {
     abstract void die(int i) throws InterruptedException;
 
     void deathChance(int i) throws InterruptedException {
-        if (age++ >= deathAge) { // calls decrement too many times if he dies again
+        if (age++ >= deathAge) {
             state = Status.DEAD;
             decrement();
             //Pop.deaths.incrementAndGet();

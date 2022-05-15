@@ -6,7 +6,9 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
+import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import org.controlsfx.control.ToggleSwitch;
 
 import static com.athens.athensfx.Genesis.selectedPopulation;
@@ -69,6 +71,9 @@ public class WindowController {
     Slider bSlider;
     @FXML
     Slider cSlider;
+    @FXML
+    Sphere earth;
+    int angle = 0;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -126,6 +131,8 @@ public class WindowController {
     }
 
     void setInfo(float[] values) {
+        earth.setRotationAxis(Rotate.Y_AXIS);
+        earth.setRotate(++angle);
         menProgressBar.setProgress(values[1]);
         menPercentage.setText(Math.round(values[1] * 8) + "/8");
         womenProgressBar.setProgress(values[2]);

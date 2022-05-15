@@ -7,9 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
+import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +24,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
     private static WindowController controller;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, URISyntaxException {
         FXMLLoader fxmlLoader = new FXMLLoader(Genesis.class.getResource("athens-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hello!");
@@ -30,6 +33,9 @@ public class Genesis extends Application { // TODO stop all threads if window is
         controller = fxmlLoader.getController();
         controller.bakeThePie();
         new WindowUpdater("WindowUpdater").start();
+        PhongMaterial earthMaterial = new PhongMaterial();
+        earthMaterial.setDiffuseMap(new Image(getClass().getResource("earth-texture.jpg").toURI().toString()));
+        controller.earth.setMaterial(earthMaterial);
     }
 
     public static void main(String[] args) {

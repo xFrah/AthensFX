@@ -50,6 +50,10 @@ public class Population {
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
         new LifeRoutineLock(id).start();
+        new LifeRoutineMen(id).start();
+        new LifeRoutineWomen(id).start();
+        new EquivalentExchangeMan(id).start();
+        new EquivalentExchangeWoman(id).start();
     }
 
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
@@ -92,10 +96,6 @@ public class Population {
         }
 
         public void run() {
-            new LifeRoutineMen(id).start();
-            new LifeRoutineWomen(id).start();
-            new EquivalentExchangeMan(id).start();
-            new EquivalentExchangeWoman(id).start();
             updateParameters();
             while (running) {
                 menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
