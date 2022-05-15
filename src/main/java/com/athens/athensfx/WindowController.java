@@ -8,7 +8,6 @@ import javafx.scene.chart.ValueAxis;
 import javafx.scene.control.*;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import org.controlsfx.control.ToggleSwitch;
 
 import static com.athens.athensfx.Genesis.selectedPopulation;
@@ -73,7 +72,7 @@ public class WindowController {
     Slider cSlider;
     @FXML
     Sphere earth;
-    int angle = 0;
+    double angle = 0.0;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -89,6 +88,7 @@ public class WindowController {
         populationChange();
         dropDown.setExpanded(false);
     }
+
 
     @FXML
     protected void onPreviousPopulation() {
@@ -131,8 +131,8 @@ public class WindowController {
     }
 
     void setInfo(float[] values) {
-        earth.setRotationAxis(Rotate.Y_AXIS);
-        earth.setRotate(++angle);
+        angle += 0.3;
+        earth.setRotate(angle);
         menProgressBar.setProgress(values[1]);
         menPercentage.setText(Math.round(values[1] * 8) + "/8");
         womenProgressBar.setProgress(values[2]);
@@ -155,7 +155,7 @@ public class WindowController {
         ratioChart.getData().add(selectedPopulation.seriesMen);
         ratioChart.getData().add(selectedPopulation.seriesWomen);
         int size = selectedPopulation.seriesWomen.getData().size();
-        if (size > 100) { // TODO this needs an optimization
+        if (size > 100) {
             ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(size - 100);
             ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(size);
         } else {

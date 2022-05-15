@@ -257,7 +257,7 @@
    <Text layoutX="813.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" />
    <Text layoutX="813.0" layoutY="607.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" />
    <Sphere fx:id="earth" layoutX="693.0" layoutY="508.0" radius="70.0" />
-   <AmbientLight layoutX="603.0" layoutY="680.0" lightOn="true">
+   <AmbientLight fx:id="light" layoutX="603.0" layoutY="680.0" lightOn="true">
       <color>
          <Color red="1.0" green="1.0" blue="1.0" opacity="0.4429657757282257" />
       </color>

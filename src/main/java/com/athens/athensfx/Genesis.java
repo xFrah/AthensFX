@@ -9,6 +9,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         PhongMaterial earthMaterial = new PhongMaterial();
         earthMaterial.setDiffuseMap(new Image(getClass().getResource("earth-texture.jpg").toURI().toString()));
         controller.earth.setMaterial(earthMaterial);
+        controller.earth.setRotationAxis(Rotate.Y_AXIS);
     }
 
     public static void main(String[] args) {
