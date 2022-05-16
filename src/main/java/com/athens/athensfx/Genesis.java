@@ -60,7 +60,6 @@ public class Genesis extends Application { // TODO stop all threads if window is
 
         public void run() {
             while (true) {
-
                 if (selectedPopulation != null) {
                     Platform.runLater(() -> controller.setInfo(Genesis.selectedPopulation.getInfo()));
                 }

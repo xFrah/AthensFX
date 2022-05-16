@@ -22,8 +22,8 @@ public class Population {
     protected LinkedBlockingQueue<Woman> newbornWomen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Integer> deadMen = new LinkedBlockingQueue<>();
     protected LinkedBlockingQueue<Integer> deadWomen = new LinkedBlockingQueue<>();
-    protected volatile ArrayList<Woman> women = new ArrayList<>();
-    protected volatile ArrayList<Man> men = new ArrayList<>();
+    protected ArrayList<Woman> women = new ArrayList<>();
+    protected ArrayList<Man> men = new ArrayList<>();
     protected volatile boolean threadManDone = false;
     protected volatile boolean threadWomanDone = false;
     protected volatile boolean manConvenience = false;
@@ -35,8 +35,8 @@ public class Population {
     protected volatile int iterations = 0;
     protected volatile float menRatio;
     protected volatile float womenRatio;
-    protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
-    protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
+    protected XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
+    protected XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
     public boolean growth = true;
     AtomicInteger births = new AtomicInteger();
     AtomicInteger deaths = new AtomicInteger();
