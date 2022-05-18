@@ -20,9 +20,7 @@ class EquivalentExchange<S extends Person> extends Thread {
     public void run() {
         try {
             while (population.running) {
-                if (population.paused) {
-                    synchronized (population.pauseLock) {population.pauseLock.wait();}
-                } // I think we can kill this
+                if (population.paused) synchronized (population.pauseLock) {population.pauseLock.wait();} // I think we can kill this
                 list.set(dead.take(), newborns.take());
             } // efficiency?
         } catch (InterruptedException e) {

@@ -5,6 +5,7 @@ import javafx.scene.chart.XYChart;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,6 +14,7 @@ public class Population {
     volatile public boolean running = true;
     volatile public boolean paused = false;
     public final Object pauseLock = new Object();
+    ThreadLocalRandom r2 = ThreadLocalRandom.current();
     int a;
     int b;
     int c;
@@ -100,9 +102,6 @@ public class Population {
             updateParameters();
             try {
                 while (running) {
-                    if (paused) {
-                        synchronized (pauseLock) {pauseLock.wait();}
-                    }
                     menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
                     womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
                     womanConvenience = var1 * menRatio < var2 * menRatio + var3 * (1 - menRatio); // var3 is there for readability
@@ -110,6 +109,7 @@ public class Population {
                     canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
                     // analyze(menRatio, womenRatio); // debug
                     if (finished.get() == 2) {
+                        if (paused) {synchronized (pauseLock) {pauseLock.wait();}}
                         synchronized (Population.this) {
                             finished.set(0);
                             iterations++;
