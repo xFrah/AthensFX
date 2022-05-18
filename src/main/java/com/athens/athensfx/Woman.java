@@ -3,7 +3,7 @@ package com.athens.athensfx;
 public class Woman extends Person {
 
     public Woman(boolean horny, Population pop) {
-        super(horny, pop, (horny) ? pop.fastWomen: pop.coyWomen);
+        super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
 
     public void update(int i) throws InterruptedException {
@@ -19,8 +19,6 @@ public class Woman extends Person {
     private void giveBirth() throws InterruptedException {
         state = Status.SINGLE;
         if (!Pop.canBirth) return;
-            //Pop.births.incrementAndGet();
-
         if (seedOfLife.nextBoolean()) {
             birth(new Man(Pop.manConvenience, Pop));
         } else {
@@ -28,7 +26,6 @@ public class Woman extends Person {
         }
 
     }
-
 
     private void birth(Man m) throws InterruptedException {
         Pop.newbornMen.put(m);

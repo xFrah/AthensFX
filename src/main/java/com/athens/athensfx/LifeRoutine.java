@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class LifeRoutine<S extends Person> extends Thread {
     private final ArrayList<S> list;
-    final Population population;
+    private final Population population;
 
     public LifeRoutine(ArrayList<S> list, int s, Population p) {
         super("LifeRoutine-" + s);

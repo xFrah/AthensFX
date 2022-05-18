@@ -6,16 +6,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Person {
     enum Status {PREGNANT, YOUNG, SINGLE, OLD, DEAD}
     private int age = 0;
-    final boolean horny;
     final private int deathAge;
-    final protected static Random seedOfLife = new Random();
-    protected volatile Status state = Status.YOUNG;
-    final Population Pop;
-    final AtomicInteger group;
+    protected Random seedOfLife = new Random();
+    volatile Status state = Status.YOUNG;
+    protected final Population Pop;
+    private final AtomicInteger group;
 
-    public Person(boolean horny, Population pop, AtomicInteger group) {
+    public Person(Population pop, AtomicInteger group) {
         this.Pop = pop;
-        this.horny = horny;
         this.group = group;
         this.deathAge = GrimReaper.deathAge();
         increment();
@@ -28,7 +26,6 @@ public abstract class Person {
         if (age++ >= deathAge) {
             state = Status.DEAD;
             decrement();
-            //Pop.deaths.incrementAndGet();
             die(i);
         }
     }

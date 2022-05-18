@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 class EquivalentExchange<S extends Person> extends Thread {
-    protected final LinkedBlockingQueue<S> newborns;
-    protected final ArrayList<S> list;
-    protected final LinkedBlockingQueue<Integer> dead;
+    private final LinkedBlockingQueue<S> newborns;
+    private final ArrayList<S> list;
+    private final LinkedBlockingQueue<Integer> dead;
     Population population;
 
     public EquivalentExchange(ArrayList<S> list, LinkedBlockingQueue<S> newbornList, LinkedBlockingQueue<Integer> deadListint, int s, Population p) {
@@ -19,7 +19,7 @@ class EquivalentExchange<S extends Person> extends Thread {
 
     public void run() {
         try {
-            while (population.running) {
+            while (population.running) { // put an interrupt instead
                 if (population.paused) synchronized (population.pauseLock) {population.pauseLock.wait();} // I think we can kill this
                 list.set(dead.take(), newborns.take());
             } // efficiency?
