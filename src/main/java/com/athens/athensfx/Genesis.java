@@ -51,7 +51,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         selectedPopulation = p;
     }
 
-    class WindowUpdater extends Thread {
+    static class WindowUpdater extends Thread {
         public static int refreshDelay = 100;
 
         public WindowUpdater(String name) {

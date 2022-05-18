@@ -18,6 +18,7 @@ public class Man extends Person {
         deathChance(i);
     }
 
+    // todo why does this take 18% of the total computation? nextInt takes 3% maybe because it is an atomic operation on the same seedOfLife object shared across all people
     private Woman getRandomWoman() {
         return Pop.women.get(seedOfLife.nextInt(Pop.women.size()));
     }
