@@ -24,8 +24,7 @@ public class Population {
     protected LinkedBlockingQueue<Integer> deadWomen = new LinkedBlockingQueue<>();
     protected ArrayList<Woman> women = new ArrayList<>();
     protected ArrayList<Man> men = new ArrayList<>();
-    protected volatile boolean threadManDone = false;
-    protected volatile boolean threadWomanDone = false;
+    protected AtomicInteger finished = new AtomicInteger();
     protected volatile boolean manConvenience = false;
     protected volatile boolean womanConvenience = false;
     AtomicInteger philanderers = new AtomicInteger();
@@ -35,8 +34,8 @@ public class Population {
     protected volatile int iterations = 0;
     protected volatile float menRatio;
     protected volatile float womenRatio;
-    protected XYChart.Series<Number,Number> seriesMen = new XYChart.Series();
-    protected XYChart.Series<Number,Number> seriesWomen = new XYChart.Series();
+    protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series<>();
+    protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series<>();
     public boolean growth = true;
     AtomicInteger births = new AtomicInteger();
     AtomicInteger deaths = new AtomicInteger();
@@ -50,10 +49,10 @@ public class Population {
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
         new LifeRoutineLock(id).start();
-        new LifeRoutineMen(id).start();
-        new LifeRoutineWomen(id).start();
-        new EquivalentExchangeMan(id).start();
-        new EquivalentExchangeWoman(id).start();
+        new LifeRoutine<>(men, id, this).start();
+        new LifeRoutine<>(women, id, this).start();
+        new EquivalentExchange<>(men, newbornMen, deadMen, id, this).start();
+        new EquivalentExchange<>(women, newbornWomen, deadWomen, id, this).start();
     }
 
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
@@ -104,10 +103,9 @@ public class Population {
                 manConvenience = var1*womenRatio + var2*(1 - womenRatio) < a * (1 - womenRatio);
                 canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
                 // analyze(menRatio, womenRatio); // debug
-                if (threadManDone && threadWomanDone) {
+                if (finished.get() == 2) {
                     synchronized (Population.this) {
-                        threadManDone = false;
-                        threadWomanDone = false;
+                        finished.set(0);
                         iterations++;
                         //analyze(menRatio, womenRatio); // debug function
                         //births.set(0); // debug
@@ -144,83 +142,4 @@ public class Population {
             newbornWomen.drainTo(women);
         }
     }
-
-    class LifeRoutineWomen extends Thread {
-        public LifeRoutineWomen(int s) {super("LifeRoutineWomen-" + s);}
-
-        public void run() {
-            while (running) {
-                for (int i = 0; i < women.size(); i++) {
-                    try {
-                        women.get(i).update(i);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                synchronized (Population.this) {
-                    threadWomanDone = true;
-                    try {
-                        Population.this.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-
-    }
-
-    class LifeRoutineMen extends Thread {
-        public LifeRoutineMen(int s) {super("LifeRoutineMen-" + s);}
-
-
-        public void run() {
-            while (running) {
-                for (int i = 0; i < men.size(); i++) {
-                    try {
-                        men.get(i).update(i);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                synchronized (Population.this) {
-                    threadManDone = true;
-                    try {
-                        Population.this.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-    }
-
-    class EquivalentExchangeMan extends Thread {
-        public EquivalentExchangeMan(int s) {super("EquivalentExchangeMan-" + s);}
-
-        public void run() {
-            while (running) {
-                try {
-                    men.set(deadMen.take(), newbornMen.take());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    class EquivalentExchangeWoman extends Thread {
-        public EquivalentExchangeWoman(int s) {super("EquivalentExchangeWoman-" + s);}
-
-        public void run() {
-            while (running) {
-                try {
-                    women.set(deadWomen.take(), newbornWomen.take());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
 }
