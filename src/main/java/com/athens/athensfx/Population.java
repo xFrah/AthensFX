@@ -11,6 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Population {
     final int id;
     volatile public boolean running = true;
+    volatile public boolean paused = false;
+    public final Object pauseLock = new Object();
     int a;
     int b;
     int c;
@@ -96,30 +98,33 @@ public class Population {
 
         public void run() {
             updateParameters();
-            while (running) {
-                menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
-                womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
-                womanConvenience = var1*menRatio < var2*menRatio + var3*(1 - menRatio); // var3 is there for readability
-                manConvenience = var1*womenRatio + var2*(1 - womenRatio) < a * (1 - womenRatio);
-                canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
-                // analyze(menRatio, womenRatio); // debug
-                if (finished.get() == 2) {
-                    synchronized (Population.this) {
-                        finished.set(0);
-                        iterations++;
-                        //analyze(menRatio, womenRatio); // debug function
-                        //births.set(0); // debug
-                        //deaths.set(0); // debug
-                        exchangeSouls();
-                        try {
+            try {
+                while (running) {
+                    if (paused) {
+                        synchronized (pauseLock) {pauseLock.wait();}
+                    }
+                    menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
+                    womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
+                    womanConvenience = var1 * menRatio < var2 * menRatio + var3 * (1 - menRatio); // var3 is there for readability
+                    manConvenience = var1 * womenRatio + var2 * (1 - womenRatio) < a * (1 - womenRatio);
+                    canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
+                    // analyze(menRatio, womenRatio); // debug
+                    if (finished.get() == 2) {
+                        synchronized (Population.this) {
+                            finished.set(0);
+                            iterations++;
+                            //analyze(menRatio, womenRatio); // debug function
+                            //births.set(0); // debug
+                            //deaths.set(0); // debug
+                            exchangeSouls();
                             TimeUnit.MILLISECONDS.sleep(iterationDelay);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                            Population.this.notifyAll();
                         }
-                        Population.this.notifyAll();
                     }
                 }
-            }
+            } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         }
 
         void analyze(float menRatio, float womenRatio) {

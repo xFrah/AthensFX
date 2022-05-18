@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.paint.PhongMaterial;
@@ -32,12 +33,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         stage.setScene(scene);
         stage.show();
         controller = fxmlLoader.getController();
-        controller.bakeThePie();
-        new WindowUpdater("WindowUpdater").start();
-        PhongMaterial earthMaterial = new PhongMaterial();
-        earthMaterial.setDiffuseMap(new Image(getClass().getResource("earth-texture.jpg").toURI().toString()));
-        controller.earth.setMaterial(earthMaterial);
-        controller.earth.setRotationAxis(Rotate.Y_AXIS);
+        setup();
     }
 
     public static void main(String[] args) {
@@ -51,6 +47,16 @@ public class Genesis extends Application { // TODO stop all threads if window is
         selectedPopulation = p;
     }
 
+    public static void setup() throws URISyntaxException {
+        controller.bakeThePie();
+        new WindowUpdater("WindowUpdater").start();
+        PhongMaterial earthMaterial = new PhongMaterial();
+        earthMaterial.setDiffuseMap(new Image(Genesis.class.getResource("earth-texture.jpg").toURI().toString()));
+        controller.earth.setMaterial(earthMaterial);
+        controller.earth.setRotationAxis(Rotate.Y_AXIS);
+        controller.xAxis = (ValueAxis<Number>) controller.ratioChart.getXAxis();
+    }
+
     static class WindowUpdater extends Thread {
         public static int refreshDelay = 100;
 
@@ -59,17 +65,16 @@ public class Genesis extends Application { // TODO stop all threads if window is
         }
 
         public void run() {
-            while (true) {
-                if (selectedPopulation != null) {
-                    Platform.runLater(() -> controller.setInfo(Genesis.selectedPopulation.getInfo()));
-                }
-                try {
+            try {
+                while (true) {
+                    if (selectedPopulation != null) Platform.runLater(() -> controller.setInfo(Genesis.selectedPopulation.getInfo()));
                     TimeUnit.MILLISECONDS.sleep(refreshDelay);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
+
     }
 
 }

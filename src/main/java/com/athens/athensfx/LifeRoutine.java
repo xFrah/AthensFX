@@ -2,7 +2,7 @@ package com.athens.athensfx;
 
 import java.util.ArrayList;
 
-class LifeRoutine<S extends Person> extends Thread { // todo change to avoid duplicated code, just make a field containing the list to update
+class LifeRoutine<S extends Person> extends Thread {
     private final ArrayList<S> list;
     final Population population;
 
@@ -13,22 +13,21 @@ class LifeRoutine<S extends Person> extends Thread { // todo change to avoid dup
     }
 
     public void run() {
-        while (population.running) {
-            for (int i = 0; i < list.size(); i++) {
-                try {
+        try {
+            while (population.running) {
+                if (population.paused) {
+                    synchronized (population.pauseLock) {population.pauseLock.wait();}
+                }
+                for (int i = 0; i < list.size(); i++) {
                     list.get(i).update(i);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
-            }
-            synchronized (population) {
-                population.finished.incrementAndGet();
-                try {
+                synchronized (population) {
+                    population.finished.incrementAndGet();
                     population.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

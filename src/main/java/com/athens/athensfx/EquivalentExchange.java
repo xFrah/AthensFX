@@ -18,12 +18,15 @@ class EquivalentExchange<S extends Person> extends Thread {
     }
 
     public void run() {
-        while (population.running) { // efficiency?
-            try {
+        try {
+            while (population.running) {
+                if (population.paused) {
+                    synchronized (population.pauseLock) {population.pauseLock.wait();}
+                } // I think we can kill this
                 list.set(dead.take(), newborns.take());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            } // efficiency?
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

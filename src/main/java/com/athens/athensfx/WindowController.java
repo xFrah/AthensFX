@@ -29,8 +29,6 @@ public class WindowController {
     @FXML
     Text womenPercentage;
     @FXML
-    Button play;
-    @FXML
     Button nextPopulation;
     @FXML
     Button previousPopulation;
@@ -73,6 +71,7 @@ public class WindowController {
     @FXML
     Sphere earth;
     double angle = 0.0;
+    ValueAxis<Number> xAxis;
     PieChart.Data p1 = new PieChart.Data("Faithful", 0);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
@@ -89,6 +88,17 @@ public class WindowController {
         dropDown.setExpanded(false);
     }
 
+    @FXML
+    protected void onPauseToggle() {
+        if (selectedPopulation.paused) {
+            selectedPopulation.paused = false;
+            synchronized (selectedPopulation.pauseLock) {selectedPopulation.pauseLock.notifyAll();}
+            pause.setText("PAUSE");
+        } else {
+            selectedPopulation.paused = true;
+            pause.setText("RESUME");
+        }
+    }
 
     @FXML
     protected void onPreviousPopulation() {
@@ -131,6 +141,12 @@ public class WindowController {
     }
 
     void setInfo(float[] values) {
+        int size = selectedPopulation.seriesWomen.getData().size();
+        if (size > 100) { // TODO this needs an optimization
+            xAxis.setLowerBound(size - 100);
+            xAxis.setUpperBound(size);
+        }
+        if (selectedPopulation.paused) return;
         angle += 0.3;
         earth.setRotate(angle);
         menProgressBar.setProgress(values[1]);
@@ -138,11 +154,6 @@ public class WindowController {
         womenProgressBar.setProgress(values[2]);
         womenPercentage.setText(Math.round(values[2] * 6) + "/6");
         pieChartUpdate();
-        int size = selectedPopulation.seriesWomen.getData().size();
-        if (size > 100) { // TODO this needs an optimization
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(size - 100);
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(size);
-        }
         console.setText("---- iteration " + values[0] + " ----" + // todo update this with deaths and births
                 "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
                 "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
@@ -156,16 +167,17 @@ public class WindowController {
         ratioChart.getData().add(selectedPopulation.seriesWomen);
         int size = selectedPopulation.seriesWomen.getData().size();
         if (size > 100) {
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(size - 100);
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(size);
+            xAxis.setLowerBound(size - 100);
+            xAxis.setUpperBound(size);
         } else {
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setLowerBound(0);
-            ((ValueAxis<Number>) ratioChart.getXAxis()).setUpperBound(100);
+            xAxis.setLowerBound(0);
+            xAxis.setUpperBound(100);
         }
     }
 
     void populationChange() {
         console.clear();
+        pause.setText((selectedPopulation.paused) ? "RESUME" : "PAUSE");
         lineChartUpdate();
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
         iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
@@ -173,6 +185,7 @@ public class WindowController {
         aSlider.setDisable(false);
         bSlider.setDisable(false);
         cSlider.setDisable(false);
+        pause.setDisable(false);
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
