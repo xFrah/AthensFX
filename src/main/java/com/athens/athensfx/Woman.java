@@ -1,28 +1,35 @@
 package com.athens.athensfx;
 
+import java.util.function.Consumer;
+
 public class Woman extends Person {
+    static Consumer<Woman> single = Woman::tooOld;
+    static Consumer<Woman> old = (woman) -> {};
+    static Consumer<Woman> dead = (woman) -> {};
+    static Consumer<Woman> pregnant = Woman::giveBirth;
+    static Consumer<Woman> young = Person::tooYoung;
+    Consumer<Woman> statusFunc = young;
 
     public Woman(boolean horny, Population pop) {
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
 
     public void update(int i) throws InterruptedException {
-        switch (state) {
-            case DEAD -> {return;}
-            case PREGNANT -> giveBirth();
-            case SINGLE -> tooOld();
-            case YOUNG -> tooYoung();
-        }
+        statusFunc.accept(this);
         deathChance(i);
     }
 
-    private void giveBirth() throws InterruptedException {
-        state = Status.SINGLE;
-        if (!Pop.canBirth) return;
-        if (seedOfLife.nextBoolean()) {
-            birth(new Man(Pop.manConvenience, Pop));
-        } else {
-            birth(new Woman(Pop.womanConvenience, Pop));
+    void giveBirth() {
+        try {
+            setSingle();
+            if (!Pop.canBirth) return;
+            if (seedOfLife.nextBoolean()) {
+                birth(new Man(Pop.manConvenience, Pop));
+            } else {
+                birth(new Woman(Pop.womanConvenience, Pop));
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -39,4 +46,19 @@ public class Woman extends Person {
         Pop.deadWomen.put(i);
     }
 
+    public void setSingle() {
+        statusFunc = single;
+    }
+
+    void setOld() {
+        statusFunc = old;
+    }
+
+    public void setPregnant() {
+        statusFunc = pregnant;
+    }
+
+    public void setDead() {
+        statusFunc = dead;
+    }
 }

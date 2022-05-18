@@ -18,7 +18,7 @@ class LifeRoutine<S extends Person> extends Thread {
                 if (population.paused) {
                     synchronized (population.pauseLock) {population.pauseLock.wait();}
                 }
-                for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i< list.size(); i++) {
                     list.get(i).update(i);
                 }
                 synchronized (population) {

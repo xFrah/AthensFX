@@ -2,12 +2,9 @@ package com.athens.athensfx;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.ValueAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.transform.Rotate;
@@ -17,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class Genesis extends Application { // TODO stop all threads if window is closed
 
@@ -33,7 +31,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         stage.setScene(scene);
         stage.show();
         controller = fxmlLoader.getController();
-        setup();
+        windowSetup();
     }
 
     public static void main(String[] args) {
@@ -47,7 +45,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
         selectedPopulation = p;
     }
 
-    public static void setup() throws URISyntaxException {
+    public static void windowSetup() throws URISyntaxException {
         controller.bakeThePie();
         new WindowUpdater("WindowUpdater").start();
         PhongMaterial earthMaterial = new PhongMaterial();

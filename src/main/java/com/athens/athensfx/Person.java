@@ -2,13 +2,13 @@ package com.athens.athensfx;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public abstract class Person {
-    enum Status {PREGNANT, YOUNG, SINGLE, OLD, DEAD}
+    protected static Random seedOfLife = new Random();
+
     private int age = 0;
     final private int deathAge;
-    protected Random seedOfLife = new Random();
-    volatile Status state = Status.YOUNG;
     protected final Population Pop;
     private final AtomicInteger group;
 
@@ -21,17 +21,20 @@ public abstract class Person {
 
     abstract void update(int i) throws InterruptedException;
     abstract void die(int i) throws InterruptedException;
+    abstract void setSingle();
+    abstract void setOld();
+    abstract void setDead();
 
     void deathChance(int i) throws InterruptedException {
         if (age++ >= deathAge) {
-            state = Status.DEAD;
+            setDead();
             decrement();
             die(i);
         }
     }
 
-    void tooOld() {if (age > 45) {this.state = Status.OLD;}}
-    void tooYoung() {if (age == 20) {state = Status.SINGLE;}} // set to 30 and see what happens
+    void tooOld() {if (age > 45) {setOld();}}
+    void tooYoung() {if (age == 20) {setSingle();}} // set to 30 and see what happens
 
     void increment() {group.incrementAndGet();}
     void decrement() {group.decrementAndGet();}

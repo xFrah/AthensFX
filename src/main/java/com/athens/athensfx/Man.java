@@ -1,20 +1,20 @@
 package com.athens.athensfx;
 
+import java.util.function.Consumer;
+
 public class Man extends Person {
+    static Consumer<Man> single = Man::single;
+    static Consumer<Man> old = (man) -> {};
+    static Consumer<Man> dead = (man) -> {};
+    static Consumer<Man> young = Person::tooYoung;
+    Consumer<Man> statusFunc = young;
 
     public Man(boolean horny, Population pop) {
         super(pop, (horny) ? pop.philanderers: pop.faithfulMen);
     }
 
     public void update(int i) throws InterruptedException {
-        switch (state) {
-            case DEAD -> {return;}
-            case YOUNG -> tooYoung();
-            case SINGLE -> {
-                woo();
-                tooOld();
-            }
-        }
+        statusFunc.accept(this);
         deathChance(i);
     }
 
@@ -24,13 +24,30 @@ public class Man extends Person {
 
     void woo() {
         Woman woman = getRandomWoman(); // !(horny && !woman.horny)
-        if (woman.state == Status.SINGLE) { // second condition is removable
-            woman.state = Status.PREGNANT;
+        if (woman.statusFunc == Woman.single) { // second condition is removable
+            woman.setPregnant();
         }
     }
 
     void die(int i) throws InterruptedException {
         Pop.deadMen.put(i);
+    }
+
+    void single() {
+        woo();
+        tooOld();
+    }
+
+    void setSingle() {
+        statusFunc = single;
+    }
+
+    void setOld() {
+        statusFunc = old;
+    }
+
+    public void setDead() {
+        statusFunc = dead;
     }
 
 }
