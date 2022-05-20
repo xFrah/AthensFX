@@ -28,20 +28,12 @@ public class Man extends Person {
         tooOld();
     }
 
-    void die(int i) throws InterruptedException {
-        Pop.deadMen.put(i);
-    }
+    void die(int i) throws InterruptedException { Pop.deadMen.put(i); }
 
-    void setSingle() {
-        statusFunc = single;
-    }
+    void setSingle() { statusFunc = single; }
 
-    void setOld() {
-        statusFunc = old;
-    }
+    void setOld() { statusFunc = old; }
 
-    void setDead() {
-        statusFunc = dead;
-    }
+    void setDead() { statusFunc = dead; }
 
 }

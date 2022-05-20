@@ -24,9 +24,9 @@ public class Woman extends Person {
             setSingle();
             if (!Pop.canBirth) return;
             if (seedOfLife.nextBoolean()) {
-                birth(new Man(Pop.manConvenience, Pop));
+                Pop.newbornMen.put(new Man(Pop.manConvenience, Pop));
             } else {
-                birth(new Woman(Pop.womanConvenience, Pop));
+                Pop.newbornWomen.put(new Woman(Pop.womanConvenience, Pop));
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -35,18 +35,10 @@ public class Woman extends Person {
     }
 
     public boolean isSingle() { return statusFunc == single; }
-
-    private void birth(Man m) throws InterruptedException { Pop.newbornMen.put(m); }
-
-    private void birth(Woman w) throws InterruptedException { Pop.newbornWomen.put(w); }
-
-    void die(int i) throws InterruptedException { Pop.deadWomen.put(i); }
-
+    public void setPregnant() { statusFunc = pregnant; }
     public void setSingle() { statusFunc = single; }
 
+    void die(int i) throws InterruptedException { Pop.deadWomen.put(i); }
     void setOld() { statusFunc = old; }
-
-    void setPregnant() { statusFunc = pregnant; }
-
     void setDead() { statusFunc = dead; }
 }

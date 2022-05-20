@@ -28,7 +28,7 @@ public class Population {
     protected LinkedBlockingQueue<Integer> deadWomen = new LinkedBlockingQueue<>();
     protected ArrayList<Woman> women = new ArrayList<>();
     protected ArrayList<Man> men = new ArrayList<>();
-    protected AtomicInteger finished = new AtomicInteger();
+    protected volatile int finished = 0;
     protected volatile boolean manConvenience = false;
     protected volatile boolean womanConvenience = false;
     AtomicInteger philanderers = new AtomicInteger();
@@ -36,13 +36,9 @@ public class Population {
     AtomicInteger fastWomen = new AtomicInteger();
     AtomicInteger coyWomen = new AtomicInteger();
     protected volatile int iterations = 0;
-    protected volatile float menRatio;
-    protected volatile float womenRatio;
-    protected volatile XYChart.Series<Number,Number> seriesMen = new XYChart.Series<>();
-    protected volatile XYChart.Series<Number,Number> seriesWomen = new XYChart.Series<>();
+    protected XYChart.Series<Number,Number> seriesMen = new XYChart.Series<>();
+    protected XYChart.Series<Number,Number> seriesWomen = new XYChart.Series<>();
     public boolean growth = true;
-    AtomicInteger births = new AtomicInteger();
-    AtomicInteger deaths = new AtomicInteger();
     public int iterationDelay = 0;
 
 
@@ -85,10 +81,8 @@ public class Population {
     }
 
     public float[] getInfo() {
-        seriesMen.getData().add(new LineChart.Data<>(seriesMen.getData().size(), menRatio));
-        seriesWomen.getData().add(new LineChart.Data<>(seriesWomen.getData().size(), womenRatio));
         return new float[]
-                {iterations, menRatio, womenRatio, men.size(), women.size(),
+                {iterations, men.size(), women.size(),
                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
                 newbornWomen.size() + newbornWomen.size(), deadWomen.size() + deadMen.size()};
     }
@@ -101,21 +95,15 @@ public class Population {
         public void run() {
             updateParameters();
             try {
-                while (running) { // todo casting to float could be a fucking bad idea
-                    menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
-                    womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
-                    womanConvenience = var1 * menRatio < var2 * menRatio + var3 * (1 - menRatio); // var3 is there for readability
-                    manConvenience = var1 * womenRatio + var2 * (1 - womenRatio) < a * (1 - womenRatio);
+                while (running) {
+                    womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
+                    manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
                     canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
-                    // analyze(menRatio, womenRatio); // debug
-                    if (finished.get() == 2) {
+                    if (finished == 2) {
                         if (paused) {synchronized (pauseLock) {pauseLock.wait();}}
                         synchronized (Population.this) {
-                            finished.set(0);
+                            finished = 0;
                             iterations++;
-                            //analyze(menRatio, womenRatio); // debug function
-                            //births.set(0); // debug
-                            //deaths.set(0); // debug
                             exchangeSouls();
                             TimeUnit.MILLISECONDS.sleep(iterationDelay);
                             Population.this.notifyAll();
@@ -125,21 +113,6 @@ public class Population {
             } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        }
-
-        void analyze(float menRatio, float womenRatio) {
-
-            System.out.println("\n---- iteration " + iterations + " ----" +
-                    "\n- Population: " + (men.size() + women.size()) + "(" + men.size() + ", " + women.size() + ")" +
-                    "\n- Normals(M, F): " + faithfulMen + ", " + coyWomen + " = " + (faithfulMen.get() + coyWomen.get()) +
-                    "\n- Hornies(M, F): " + philanderers + ", " + fastWomen + " = " + (philanderers.get() + fastWomen.get()) +
-                    "\n- Ratio: " + menRatio + ", " + womenRatio +
-                    "\n- Dead: " + (deaths.get()) +
-                    "\n- DeathQueue: " + (deadMen.size() + deadWomen.size()) +
-                    "\n- Growth: " + growth +
-                    "\n- Births: " + (births.get()) +
-                    "\n- BirthQueue: " + (newbornWomen.size() + newbornMen.size()) +
-                    "\n- canGiveBirth: " + canBirth);
         }
 
         void exchangeSouls() {

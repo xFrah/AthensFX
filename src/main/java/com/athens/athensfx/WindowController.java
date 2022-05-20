@@ -149,16 +149,24 @@ public class WindowController {
         if (selectedPopulation.paused) return;
         angle += 0.3;
         earth.setRotate(angle);
-        menProgressBar.setProgress(values[1]);
-        menPercentage.setText(Math.round(values[1] * 8) + "/8");
-        womenProgressBar.setProgress(values[2]);
-        womenPercentage.setText(Math.round(values[2] * 6) + "/6");
+        float menRatio = values[4] / (values[3] + values[4]);
+        float womenRatio = values[6] / (values[6] + values[5]);
+        menProgressBar.setProgress(menRatio);
+        menPercentage.setText(Math.round(menRatio * 8) + "/8");
+        womenProgressBar.setProgress(womenRatio);
+        womenPercentage.setText(Math.round(womenRatio * 6) + "/6");
+        seriesUpdate(menRatio, womenRatio);
         pieChartUpdate();
-        console.setText("---- iteration " + values[0] + " ----" + // todo update this with deaths and births
-                "\n- Population: " + (int) (values[3] + values[4]) + "(" + (int) values[3] + ", " + (int) values[4] + ")" +
-                "\n- Normals(M, F): " + (int) values[6] + ", " + (int) values[8] + " = " + ((int) (values[6] + values[8])) +
-                "\n- Hornies(M, F): " + (int) values[5] + ", " + (int) values[5] + " = " + ((int) (values[5] + values[7])) +
-                "\n- Ratio: " + values[1] + ", " + values[2] + "\n");
+        console.setText("---- iteration " + values[0] + " ----" +
+                "\n- Population: " + (int) (values[1] + values[2]) + "(" + (int) values[1] + ", " + (int) values[2] + ")" +
+                "\n- Normals(M, F): " + (int) values[4] + ", " + (int) values[6] + " = " + ((int) (values[4] + values[6])) +
+                "\n- Hornies(M, F): " + (int) values[3] + ", " + (int) values[5] + " = " + ((int) (values[3] + values[5])) +
+                "\n- Ratio: " + menRatio + ", " + womenRatio + "\n");
+    }
+
+    private void seriesUpdate(float menRatio, float womenRatio) {
+        selectedPopulation.seriesMen.getData().add(new LineChart.Data<>(selectedPopulation.seriesMen.getData().size(), menRatio));
+        selectedPopulation.seriesWomen.getData().add(new LineChart.Data<>(selectedPopulation.seriesWomen.getData().size(), womenRatio));
     }
 
     void lineChartUpdate() {

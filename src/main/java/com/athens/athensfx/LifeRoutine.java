@@ -21,8 +21,9 @@ class LifeRoutine<S extends Person> extends Thread {
                 for (int i = 0; i< list.size(); i++) {
                     list.get(i).update(i);
                 }
+
                 synchronized (population) {
-                    population.finished.incrementAndGet();
+                    population.finished++;
                     population.wait();
                 }
             }
