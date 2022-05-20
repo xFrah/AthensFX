@@ -101,7 +101,7 @@ public class Population {
         public void run() {
             updateParameters();
             try {
-                while (running) {
+                while (running) { // todo casting to float could be a fucking bad idea
                     menRatio = (float) faithfulMen.get() / (float) (men.size()); // the convenience values are calculated here
                     womenRatio = (float) coyWomen.get() / (float) (women.size()); // these are accessed by the objects in parallel
                     womanConvenience = var1 * menRatio < var2 * menRatio + var3 * (1 - menRatio); // var3 is there for readability

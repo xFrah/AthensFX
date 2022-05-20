@@ -33,10 +33,10 @@ public abstract class Person {
         }
     }
 
-    void tooOld() {if (age > 45) {setOld();}}
-    void tooYoung() {if (age == 20) {setSingle();}} // set to 30 and see what happens
+    void tooOld() { if (age > 45) {setOld();} }
+    void tooYoung() { if (age == 20) {setSingle();} } // set to 30 and see what happens
 
-    void increment() {group.incrementAndGet();}
-    void decrement() {group.decrementAndGet();}
+    void increment() { group.incrementAndGet(); }
+    void decrement() { group.decrementAndGet(); }
 
 }

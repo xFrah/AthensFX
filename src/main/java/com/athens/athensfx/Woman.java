@@ -8,7 +8,7 @@ public class Woman extends Person {
     static Consumer<Woman> dead = (woman) -> {};
     static Consumer<Woman> pregnant = Woman::giveBirth;
     static Consumer<Woman> young = Person::tooYoung;
-    Consumer<Woman> statusFunc = young;
+    private Consumer<Woman> statusFunc = young;
 
     public Woman(boolean horny, Population pop) {
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
@@ -34,31 +34,19 @@ public class Woman extends Person {
 
     }
 
-    private void birth(Man m) throws InterruptedException {
-        Pop.newbornMen.put(m);
-    }
+    public boolean isSingle() { return statusFunc == single; }
 
-    private void birth(Woman w) throws InterruptedException {
-        Pop.newbornWomen.put(w);
-    }
+    private void birth(Man m) throws InterruptedException { Pop.newbornMen.put(m); }
 
-    void die(int i) throws InterruptedException {
-        Pop.deadWomen.put(i);
-    }
+    private void birth(Woman w) throws InterruptedException { Pop.newbornWomen.put(w); }
 
-    public void setSingle() {
-        statusFunc = single;
-    }
+    void die(int i) throws InterruptedException { Pop.deadWomen.put(i); }
 
-    void setOld() {
-        statusFunc = old;
-    }
+    public void setSingle() { statusFunc = single; }
 
-    public void setPregnant() {
-        statusFunc = pregnant;
-    }
+    void setOld() { statusFunc = old; }
 
-    public void setDead() {
-        statusFunc = dead;
-    }
+    void setPregnant() { statusFunc = pregnant; }
+
+    void setDead() { statusFunc = dead; }
 }

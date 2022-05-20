@@ -7,7 +7,7 @@ public class Man extends Person {
     static Consumer<Man> old = (man) -> {};
     static Consumer<Man> dead = (man) -> {};
     static Consumer<Man> young = Person::tooYoung;
-    Consumer<Man> statusFunc = young;
+    private Consumer<Man> statusFunc = young;
 
     public Man(boolean horny, Population pop) {
         super(pop, (horny) ? pop.philanderers: pop.faithfulMen);
@@ -22,20 +22,14 @@ public class Man extends Person {
         return Pop.women.get(Pop.r2.nextInt(Pop.women.size()));
     }
 
-    void woo() {
+    void single() {
         Woman woman = getRandomWoman(); // !(horny && !woman.horny)
-        if (woman.statusFunc == Woman.single) { // second condition is removable
-            woman.setPregnant();
-        }
+        if (woman.isSingle()) { woman.setPregnant(); }
+        tooOld();
     }
 
     void die(int i) throws InterruptedException {
         Pop.deadMen.put(i);
-    }
-
-    void single() {
-        woo();
-        tooOld();
     }
 
     void setSingle() {
@@ -46,7 +40,7 @@ public class Man extends Person {
         statusFunc = old;
     }
 
-    public void setDead() {
+    void setDead() {
         statusFunc = dead;
     }
 
