@@ -2,7 +2,7 @@ package com.athens.athensfx;
 
 import java.util.function.Consumer;
 
-public class Man extends Person {
+public class Man extends Person implements Updatable {
     static Consumer<Man> single = Man::single;
     static Consumer<Man> old = (man) -> {};
     static Consumer<Man> dead = (man) -> {};

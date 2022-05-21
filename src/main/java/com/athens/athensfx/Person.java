@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public abstract class Person {
+public abstract class Person implements Updatable {
     protected static Random seedOfLife = new Random();
 
     private int age = 0;
@@ -19,7 +19,6 @@ public abstract class Person {
         increment();
     }
 
-    abstract void update(int i) throws InterruptedException;
     abstract void die(int i) throws InterruptedException;
     abstract void setSingle();
     abstract void setOld();

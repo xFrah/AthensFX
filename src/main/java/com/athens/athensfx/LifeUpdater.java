@@ -2,11 +2,11 @@ package com.athens.athensfx;
 
 import java.util.ArrayList;
 
-class LifeRoutine<S extends Person> extends Thread {
+class LifeUpdater<S extends Updatable> extends Thread {
     private final ArrayList<S> list;
     private final Population population;
 
-    public LifeRoutine(ArrayList<S> list, int s, Population p) {
+    public LifeUpdater(ArrayList<S> list, int s, Population p) {
         super("LifeRoutine-" + s);
         this.list = list;
         this.population = p;

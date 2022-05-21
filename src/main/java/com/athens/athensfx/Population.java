@@ -1,6 +1,5 @@
 package com.athens.athensfx;
 
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 
 import java.util.*;
@@ -49,8 +48,8 @@ public class Population {
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
         new LifeRoutineLock(id).start();
-        new LifeRoutine<>(men, id, this).start();
-        new LifeRoutine<>(women, id, this).start();
+        new LifeUpdater<>(men, id, this).start();
+        new LifeUpdater<>(women, id, this).start();
         new EquivalentExchange<>(men, newbornMen, deadMen, id, this).start();
         new EquivalentExchange<>(women, newbornWomen, deadWomen, id, this).start();
     }
