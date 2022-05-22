@@ -2,22 +2,19 @@ package com.athens.athensfx;
 
 import java.util.ArrayList;
 
-class LifeUpdater<S extends Updatable> extends Thread {
+class LifeUpdater<S extends Person> extends Thread {
     private final ArrayList<S> list;
     private final Population population;
 
-    public LifeUpdater(ArrayList<S> list, int s, Population p) {
-        super("LifeRoutine-" + s);
-        this.list = list;
+    public LifeUpdater(PeopleHolder<S> holder, Population p) {
+        super("LifeRoutine-" + p.id);
+        this.list = holder.alive;
         this.population = p;
     }
 
     public void run() {
         try {
             while (population.running) {
-                if (population.paused) {
-                    synchronized (population.pauseLock) {population.pauseLock.wait();}
-                }
                 for (int i = 0; i< list.size(); i++) {
                     list.get(i).update(i);
                 }

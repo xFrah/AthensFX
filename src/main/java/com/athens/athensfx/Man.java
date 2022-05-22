@@ -2,7 +2,7 @@ package com.athens.athensfx;
 
 import java.util.function.Consumer;
 
-public class Man extends Person implements Updatable {
+public class Man extends Person {
     static Consumer<Man> single = Man::single;
     static Consumer<Man> old = (man) -> {};
     static Consumer<Man> dead = (man) -> {};
@@ -18,17 +18,13 @@ public class Man extends Person implements Updatable {
         deathChance(i);
     }
 
-    private Woman getRandomWoman() {
-        return Pop.women.get(Pop.r2.nextInt(Pop.women.size()));
-    }
-
     void single() {
-        Woman woman = getRandomWoman(); // !(horny && !woman.horny)
+        Woman woman = p.getRandomWoman(); // !(horny && !woman.horny)
         if (woman.isSingle()) { woman.setPregnant(); }
         tooOld();
     }
 
-    void die(int i) throws InterruptedException { Pop.deadMen.put(i); }
+    void die(int i) throws InterruptedException { p.menHolder.dead.put(i); }
 
     void setSingle() { statusFunc = single; }
 

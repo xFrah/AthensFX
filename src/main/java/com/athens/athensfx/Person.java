@@ -2,23 +2,23 @@ package com.athens.athensfx;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
-public abstract class Person implements Updatable {
+public abstract class Person {
     protected static Random seedOfLife = new Random();
 
     private int age = 0;
     final private int deathAge;
-    protected final Population Pop;
+    protected final Population p;
     private final AtomicInteger group;
 
     public Person(Population pop, AtomicInteger group) {
-        this.Pop = pop;
+        this.p = pop;
         this.group = group;
         this.deathAge = GrimReaper.deathAge();
         increment();
     }
 
+    abstract void update(int i) throws InterruptedException;
     abstract void die(int i) throws InterruptedException;
     abstract void setSingle();
     abstract void setOld();

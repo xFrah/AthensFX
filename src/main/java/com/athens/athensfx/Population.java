@@ -1,9 +1,5 @@
 package com.athens.athensfx;
 
-import javafx.scene.chart.XYChart;
-
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,22 +17,16 @@ public class Population {
     int var2;
     int var3;
     public boolean canBirth;
-    protected LinkedBlockingQueue<Man> newbornMen = new LinkedBlockingQueue<>();
-    protected LinkedBlockingQueue<Woman> newbornWomen = new LinkedBlockingQueue<>();
-    protected LinkedBlockingQueue<Integer> deadMen = new LinkedBlockingQueue<>();
-    protected LinkedBlockingQueue<Integer> deadWomen = new LinkedBlockingQueue<>();
-    protected ArrayList<Woman> women = new ArrayList<>();
-    protected ArrayList<Man> men = new ArrayList<>();
     protected volatile int finished = 0;
-    protected volatile boolean manConvenience = false;
-    protected volatile boolean womanConvenience = false;
+    PeopleHolder<Man> menHolder = new PeopleHolder<>();
+    PeopleHolder<Woman> womenHolder = new PeopleHolder<>();
+    volatile boolean manConvenience = false;
+    volatile boolean womanConvenience = false;
     AtomicInteger philanderers = new AtomicInteger();
     AtomicInteger faithfulMen = new AtomicInteger();
     AtomicInteger fastWomen = new AtomicInteger();
     AtomicInteger coyWomen = new AtomicInteger();
     protected volatile int iterations = 0;
-    protected XYChart.Series<Number,Number> seriesMen = new XYChart.Series<>();
-    protected XYChart.Series<Number,Number> seriesWomen = new XYChart.Series<>();
     public boolean growth = true;
     public int iterationDelay = 0;
 
@@ -47,30 +37,24 @@ public class Population {
         this.c = c;
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
-        new LifeRoutineLock(id).start();
-        new LifeUpdater<>(men, id, this).start();
-        new LifeUpdater<>(women, id, this).start();
-        new EquivalentExchange<>(men, newbornMen, deadMen, id, this).start();
-        new EquivalentExchange<>(women, newbornWomen, deadWomen, id, this).start();
+        new PopulationUpdaterPool(id).start();
+        new LifeUpdater<>(menHolder, this).start();
+        new LifeUpdater<>(womenHolder, this).start();
+        new EquivalentExchange<>(menHolder, this).start();
+        new EquivalentExchange<>(womenHolder, this).start();
     }
 
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
+        menHolder.series.setName("Men ratio");
+        womenHolder.series.setName("Women ratios");
+        for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {menHolder.alive.add(new Man(false, this));}
+        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioMan); i++) {menHolder.alive.add(new Man(true, this));}
+        for (int i = 0; i < ((float) startingPopulation/2)*ratioWoman; i++) {womenHolder.alive.add(new Woman(false, this));}
+        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioWoman); i++) {womenHolder.alive.add(new Woman(true, this));}
+    }
 
-        seriesMen.setName("Men ratio");
-        seriesWomen.setName("Women ratios");
-
-        for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {
-            men.add(new Man(false, this));
-        }
-        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioMan); i++) {
-            men.add(new Man(true, this));
-        }
-        for (int i = 0; i < ((float) startingPopulation/2)*ratioWoman; i++) {
-            women.add(new Woman(false, this));
-        }
-        for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioWoman); i++) {
-            women.add(new Woman(true, this));
-        }
+    Woman getRandomWoman() {
+        return womenHolder.alive.get(r2.nextInt(womenHolder.alive.size()));
     }
 
     void updateParameters() {
@@ -79,31 +63,36 @@ public class Population {
         var3 = a - b;
     }
 
-    public float[] getInfo() {
+    public float[] getInfo() { // todo let setInfo access directly these info
         return new float[]
-                {iterations, men.size(), women.size(),
+                {iterations, menHolder.alive.size(), womenHolder.alive.size(),
                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
-                newbornWomen.size() + newbornWomen.size(), deadWomen.size() + deadMen.size()};
+                womenHolder.newborns.size() + menHolder.newborns.size(), womenHolder.dead.size() + menHolder.dead.size()};
     }
 
-    class LifeRoutineLock extends Thread {
-        public LifeRoutineLock(int s) {
+    class PopulationUpdaterPool extends Thread {
+        public PopulationUpdaterPool(int s) {
             super("LifeRoutineLock-" + s);
+        }
+
+        private void updateBirthValues () {
+            womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
+            manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
+            canBirth = (menHolder.dead.size() + womenHolder.dead.size()) > 0 || growth;
         }
 
         public void run() {
             updateParameters();
             try {
                 while (running) {
-                    womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
-                    manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
-                    canBirth = (deadMen.size() + deadWomen.size()) > 0 || growth;
+                    updateBirthValues();
                     if (finished == 2) {
                         if (paused) {synchronized (pauseLock) {pauseLock.wait();}}
                         synchronized (Population.this) {
                             finished = 0;
                             iterations++;
-                            exchangeSouls();
+                            menHolder.exchangeSouls();
+                            womenHolder.exchangeSouls();
                             TimeUnit.MILLISECONDS.sleep(iterationDelay);
                             Population.this.notifyAll();
                         }
@@ -111,12 +100,7 @@ public class Population {
                 }
             } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        }
-
-        void exchangeSouls() {
-            newbornMen.drainTo(men);
-            newbornWomen.drainTo(women);
+            }
         }
     }
 }

@@ -141,7 +141,7 @@ public class WindowController {
     }
 
     void setInfo(float[] values) {
-        int size = selectedPopulation.seriesWomen.getData().size();
+        int size = selectedPopulation.womenHolder.series.getData().size();
         if (size > 100) { // TODO this needs an optimization
             xAxis.setLowerBound(size - 100);
             xAxis.setUpperBound(size);
@@ -165,15 +165,15 @@ public class WindowController {
     }
 
     private void seriesUpdate(float menRatio, float womenRatio) {
-        selectedPopulation.seriesMen.getData().add(new LineChart.Data<>(selectedPopulation.seriesMen.getData().size(), menRatio));
-        selectedPopulation.seriesWomen.getData().add(new LineChart.Data<>(selectedPopulation.seriesWomen.getData().size(), womenRatio));
+        selectedPopulation.menHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.menHolder.series.getData().size(), menRatio));
+        selectedPopulation.womenHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.womenHolder.series.getData().size(), womenRatio));
     }
 
     void lineChartUpdate() {
         ratioChart.getData().clear();
-        ratioChart.getData().add(selectedPopulation.seriesMen);
-        ratioChart.getData().add(selectedPopulation.seriesWomen);
-        int size = selectedPopulation.seriesWomen.getData().size();
+        ratioChart.getData().add(selectedPopulation.womenHolder.series);
+        ratioChart.getData().add(selectedPopulation.menHolder.series);
+        int size = selectedPopulation.womenHolder.series.getData().size();
         if (size > 100) {
             xAxis.setLowerBound(size - 100);
             xAxis.setUpperBound(size);

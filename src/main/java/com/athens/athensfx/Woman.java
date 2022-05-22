@@ -22,11 +22,11 @@ public class Woman extends Person {
     void giveBirth() {
         try {
             setSingle();
-            if (!Pop.canBirth) return;
+            if (!p.canBirth) return;
             if (seedOfLife.nextBoolean()) {
-                Pop.newbornMen.put(new Man(Pop.manConvenience, Pop));
+                p.menHolder.newborns.put(new Man(p.manConvenience, p));
             } else {
-                Pop.newbornWomen.put(new Woman(Pop.womanConvenience, Pop));
+                p.womenHolder.newborns.put(new Woman(p.womanConvenience, p));
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -38,7 +38,7 @@ public class Woman extends Person {
     public void setPregnant() { statusFunc = pregnant; }
     public void setSingle() { statusFunc = single; }
 
-    void die(int i) throws InterruptedException { Pop.deadWomen.put(i); }
+    void die(int i) throws InterruptedException { p.womenHolder.dead.put(i); }
     void setOld() { statusFunc = old; }
     void setDead() { statusFunc = dead; }
 }

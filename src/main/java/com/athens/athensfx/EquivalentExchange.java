@@ -9,18 +9,17 @@ class EquivalentExchange<S extends Person> extends Thread {
     private final LinkedBlockingQueue<Integer> dead;
     Population population;
 
-    public EquivalentExchange(ArrayList<S> list, LinkedBlockingQueue<S> newbornList, LinkedBlockingQueue<Integer> deadListint, int s, Population p) {
-        super("EquivalentExchange-" + s);
-        this.newborns = newbornList;
-        this.dead = deadListint;
-        this.list = list;
+    public EquivalentExchange(PeopleHolder<S> holder, Population p) {
+        super("EquivalentExchange-" + p.id);
+        this.newborns = holder.newborns;
+        this.dead = holder.dead;
+        this.list = holder.alive;
         this.population = p;
     }
 
     public void run() {
         try {
             while (population.running) { // put an interrupt instead
-                if (population.paused) synchronized (population.pauseLock) {population.pauseLock.wait();} // I think we can kill this
                 list.set(dead.take(), newborns.take());
             } // efficiency?
         } catch (InterruptedException e) {
