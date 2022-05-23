@@ -23,7 +23,7 @@ public class Woman extends Person {
         try {
             setSingle();
             if (!p.canBirth) return;
-            if (seedOfLife.nextBoolean()) {
+            if (p.r2.nextBoolean()) { // todo man fix this shit
                 p.menHolder.newborns.put(new Man(p.manConvenience, p));
             } else {
                 p.womenHolder.newborns.put(new Woman(p.womanConvenience, p));

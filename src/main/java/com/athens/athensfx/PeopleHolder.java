@@ -1,7 +1,6 @@
 package com.athens.athensfx;
 
 import javafx.scene.chart.XYChart;
-
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 

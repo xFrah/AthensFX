@@ -1,10 +1,8 @@
 package com.athens.athensfx;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Person {
-    protected static Random seedOfLife = new Random();
 
     private int age = 0;
     final private int deathAge;
