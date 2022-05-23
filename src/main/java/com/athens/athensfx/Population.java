@@ -78,7 +78,7 @@ public class Population {
         private void updateBirthValues () {
             womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
-            canBirth = (menHolder.dead.size() + womenHolder.dead.size()) > 0 || growth;
+            canBirth = growth || (menHolder.dead.size() + womenHolder.dead.size()) > 0;
         }
 
         public void run() {
@@ -87,15 +87,13 @@ public class Population {
                 while (running) {
                     updateBirthValues();
                     if (finished == 2) {
-                        if (paused) {synchronized (pauseLock) {pauseLock.wait();}}
-                        synchronized (Population.this) {
-                            finished = 0;
-                            iterations++;
-                            menHolder.exchangeSouls();
-                            womenHolder.exchangeSouls();
-                            TimeUnit.MILLISECONDS.sleep(iterationDelay);
-                            Population.this.notifyAll();
-                        }
+                        finished = 0;
+                        iterations++;
+                        menHolder.exchangeSouls();
+                        womenHolder.exchangeSouls();
+                        if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
+                        TimeUnit.MILLISECONDS.sleep(iterationDelay);
+                        synchronized (Population.this) { Population.this.notifyAll(); }
                     }
                 }
             } catch (InterruptedException e) {
