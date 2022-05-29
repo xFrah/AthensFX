@@ -38,8 +38,8 @@ public class Genesis extends Application { // TODO stop all threads if window is
         launch();
     }
 
-    public static void createPopulation(int a, int b, int c) {
-        Population p = new Population(a, b, c, controller.menRatioSlider.getValue(), controller.womenRatioSlider.getValue(), 100000, populations.size());
+    public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman) {
+        Population p = new Population(a, b, c, ratioMan, ratioWoman, 100000, populations.size());
         populations.add(p);
         selectedPopulationIndex = populations.size() - 1;
         selectedPopulation = p;

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Person {
 
     private int age = 0;
-    final private int deathAge;
+    private final int deathAge;
     protected final Population p;
     private final AtomicInteger group;
 

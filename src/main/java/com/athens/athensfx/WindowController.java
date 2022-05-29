@@ -70,22 +70,23 @@ public class WindowController {
     Slider cSlider;
     @FXML
     Sphere earth;
-    double angle = 0.0;
+    private double angle = 0.0;
     ValueAxis<Number> xAxis;
-    PieChart.Data p1 = new PieChart.Data("Faithful", 0);
-    PieChart.Data p2 = new PieChart.Data("Philanderer", 0);
-    PieChart.Data p3 = new PieChart.Data("CoyWoman", 0);
-    PieChart.Data p4 = new PieChart.Data("FastWoman", 0);
+    PieChart.Data p1 = new PieChart.Data("Faithful", 1);
+    PieChart.Data p2 = new PieChart.Data("Philanderer", 1);
+    PieChart.Data p3 = new PieChart.Data("CoyWoman", 1);
+    PieChart.Data p4 = new PieChart.Data("FastWoman", 1);
 
 
     @FXML
     protected void onCreateNew() {
-        Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()));
+        Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()), menRatioSlider.getValue(), womenRatioSlider.getValue());
         aLabel.setText(a.getText());
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
-        populationChange();
+        populationReload();
         dropDown.setExpanded(false);
+        if (pause.isDisabled()) { buttonsStart(); }
     }
 
     @FXML
@@ -104,14 +105,14 @@ public class WindowController {
     protected void onPreviousPopulation() {
         if (Genesis.selectedPopulationIndex == 0) return;
         selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
-        populationChange();
+        populationReload();
     }
 
     @FXML
     protected void onNextPopulation() {
         if (Genesis.selectedPopulationIndex >= Genesis.populations.size() - 1) return;
         selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
-        populationChange();
+        populationReload();
     }
 
     @FXML
@@ -147,7 +148,7 @@ public class WindowController {
             xAxis.setUpperBound(size);
         }
         if (selectedPopulation.paused) return;
-        angle += 0.3;
+        angle += 0.5;
         earth.setRotate(angle);
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
@@ -157,11 +158,12 @@ public class WindowController {
         womenPercentage.setText(Math.round(womenRatio * 6) + "/6");
         seriesUpdate(menRatio, womenRatio);
         pieChartUpdate();
-        console.setText("---- iteration " + values[0] + " ----" +
+        console.setText("---------- iteration " + values[0] + " ----------" +
                 "\n- Population: " + (int) (values[1] + values[2]) + "(" + (int) values[1] + ", " + (int) values[2] + ")" +
-                "\n- Normals(M, F): " + (int) values[4] + ", " + (int) values[6] + " = " + ((int) (values[4] + values[6])) +
-                "\n- Hornies(M, F): " + (int) values[3] + ", " + (int) values[5] + " = " + ((int) (values[3] + values[5])) +
-                "\n- Ratio: " + menRatio + ", " + womenRatio + "\n");
+                "\n- F: " + (int) values[4] + ", P: " + (int) values[3] + ", C: " + (int) values[6] + ", S: " + (int) values[5] +
+                "\n- Ratio: " + menRatio + ", " + womenRatio +
+                "\n- Speed: " + (int) (((values[1]+values[2]) / values[9]) * 1000) + " p/s"+ // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
+                "\n- Execution Time: " + (int) values[9] + " ms");
     }
 
     private void seriesUpdate(float menRatio, float womenRatio) {
@@ -169,7 +171,7 @@ public class WindowController {
         selectedPopulation.womenHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.womenHolder.series.getData().size(), womenRatio));
     }
 
-    void lineChartUpdate() {
+    void lineChartReload() {
         ratioChart.getData().clear();
         ratioChart.getData().add(selectedPopulation.womenHolder.series);
         ratioChart.getData().add(selectedPopulation.menHolder.series);
@@ -183,22 +185,16 @@ public class WindowController {
         }
     }
 
-    void populationChange() {
+    void populationReload() {
         console.clear();
         pause.setText((selectedPopulation.paused) ? "RESUME" : "PAUSE");
-        lineChartUpdate();
+        lineChartReload();
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
         iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
         growthSwitch.setSelected(selectedPopulation.growth);
-        aSlider.setDisable(false);
-        bSlider.setDisable(false);
-        cSlider.setDisable(false);
-        pause.setDisable(false);
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
-        iterationDelaySlider.setDisable(false);
-        growthSwitch.setDisable(false);
     }
 
     void pieChartUpdate() {
@@ -208,6 +204,14 @@ public class WindowController {
         p4.setPieValue(selectedPopulation.fastWomen.get());
     }
 
+    void buttonsStart () {
+        aSlider.setDisable(false);
+        bSlider.setDisable(false);
+        cSlider.setDisable(false);
+        pause.setDisable(false);
+        iterationDelaySlider.setDisable(false);
+        growthSwitch.setDisable(false);
+    }
 
     public void bakeThePie() {
         pieChart.setData(FXCollections.observableArrayList(p1, p2, p3, p4));

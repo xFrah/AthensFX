@@ -5,30 +5,33 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Population {
-    final int id;
-    volatile public boolean running = true;
-    volatile public boolean paused = false;
-    public final Object pauseLock = new Object();
-    ThreadLocalRandom r2 = ThreadLocalRandom.current();
     int a;
     int b;
     int c;
     int var1;
     int var2;
     int var3;
-    public boolean canBirth;
-    protected volatile int finished = 0;
-    PeopleHolder<Man> menHolder = new PeopleHolder<>();
-    PeopleHolder<Woman> womenHolder = new PeopleHolder<>();
-    volatile boolean manConvenience = false;
-    volatile boolean womanConvenience = false;
-    AtomicInteger philanderers = new AtomicInteger();
-    AtomicInteger faithfulMen = new AtomicInteger();
-    AtomicInteger fastWomen = new AtomicInteger();
-    AtomicInteger coyWomen = new AtomicInteger();
-    protected volatile int iterations = 0;
-    public boolean growth = true;
-    public int iterationDelay = 0;
+
+    final int id;
+    volatile public boolean running = true;
+    volatile public boolean paused = false;
+    volatile public boolean growth = true;
+    volatile boolean canBirth;
+    volatile transient int finished = 0;
+    private int iterations = 0;
+    volatile public int iterationDelay = 0;
+    transient boolean manConvenience = false;
+    transient boolean womanConvenience = false;
+    volatile transient float lastIterationTimeCompletion;
+
+    final ThreadLocalRandom r2 = ThreadLocalRandom.current(); // todo fix this shit
+    final PeopleHolder<Man> menHolder = new PeopleHolder<>();
+    final PeopleHolder<Woman> womenHolder = new PeopleHolder<>();
+    final AtomicInteger philanderers = new AtomicInteger();
+    final AtomicInteger faithfulMen = new AtomicInteger();
+    final AtomicInteger fastWomen = new AtomicInteger();
+    final AtomicInteger coyWomen = new AtomicInteger();
+    public final Object pauseLock = new Object();
 
 
     public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
@@ -37,11 +40,7 @@ public class Population {
         this.c = c;
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
-        new PopulationUpdaterPool(id).start();
-        new LifeUpdater<>(menHolder, this).start();
-        new LifeUpdater<>(womenHolder, this).start();
-        new EquivalentExchange<>(menHolder, this).start();
-        new EquivalentExchange<>(womenHolder, this).start();
+        new PopulationUpdaterPool().start();
     }
 
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
@@ -63,16 +62,21 @@ public class Population {
         var3 = a - b;
     }
 
-    public float[] getInfo() { // todo let setInfo access directly these info
+    public float[] getInfo() {
         return new float[]
                 {iterations, menHolder.alive.size(), womenHolder.alive.size(),
                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
-                womenHolder.newborns.size() + menHolder.newborns.size(), womenHolder.dead.size() + menHolder.dead.size()};
+                womenHolder.newborns.size() + menHolder.newborns.size(), womenHolder.dead.size() + menHolder.dead.size(),
+                lastIterationTimeCompletion};
     }
 
     class PopulationUpdaterPool extends Thread {
-        public PopulationUpdaterPool(int s) {
-            super("LifeRoutineLock-" + s);
+        public PopulationUpdaterPool() {
+            super("LifeRoutineLock-" + id);
+            new LifeUpdater<>(menHolder, Population.this).start();
+            new LifeUpdater<>(womenHolder, Population.this).start();
+            new EquivalentExchange<>(menHolder, Population.this).start();
+            new EquivalentExchange<>(womenHolder, Population.this).start();
         }
 
         private void updateBirthValues () {
@@ -83,17 +87,20 @@ public class Population {
 
         public void run() {
             updateParameters();
+            long start = 0;
             try {
                 while (running) {
                     updateBirthValues();
                     if (finished == 2) {
+                        lastIterationTimeCompletion = System.currentTimeMillis() - start;
                         finished = 0;
                         iterations++;
-                        menHolder.exchangeSouls();
-                        womenHolder.exchangeSouls();
                         if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
                         TimeUnit.MILLISECONDS.sleep(iterationDelay);
-                        synchronized (Population.this) { Population.this.notifyAll(); }
+                        synchronized (Population.this) {
+                            Population.this.notifyAll();
+                            start = System.currentTimeMillis();
+                        }
                     }
                 }
             } catch (InterruptedException e) {
