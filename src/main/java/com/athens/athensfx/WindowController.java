@@ -77,7 +77,6 @@ public class WindowController {
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 1);
     PieChart.Data p4 = new PieChart.Data("FastWoman", 1);
 
-
     @FXML
     protected void onCreateNew() {
         Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()), menRatioSlider.getValue(), womenRatioSlider.getValue());
@@ -152,6 +151,7 @@ public class WindowController {
         earth.setRotate(angle);
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
+        if (selectedPopulation.stopper.update(menRatio, womenRatio)) onPauseToggle();
         menProgressBar.setProgress(menRatio);
         menPercentage.setText(Math.round(menRatio * 8) + "/8");
         womenProgressBar.setProgress(womenRatio);

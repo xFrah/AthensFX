@@ -24,6 +24,7 @@ public class Population {
     transient boolean womanConvenience = false;
     volatile transient float lastIterationTimeCompletion;
 
+    final Stopper stopper = new Stopper(this);
     final ThreadLocalRandom r2 = ThreadLocalRandom.current(); // todo fix this shit
     final PeopleHolder<Man> menHolder = new PeopleHolder<>();
     final PeopleHolder<Woman> womenHolder = new PeopleHolder<>();
@@ -32,6 +33,7 @@ public class Population {
     final AtomicInteger fastWomen = new AtomicInteger();
     final AtomicInteger coyWomen = new AtomicInteger();
     public final Object pauseLock = new Object();
+
 
 
     public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
@@ -108,4 +110,5 @@ public class Population {
             }
         }
     }
+
 }
