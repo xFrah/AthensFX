@@ -90,12 +90,12 @@ public class WindowController {
 
     @FXML
     protected void onPauseToggle() {
-        if (selectedPopulation.paused) {
-            selectedPopulation.paused = false;
+        if (selectedPopulation.isPaused()) {
+            selectedPopulation.setPaused(false);
             synchronized (selectedPopulation.pauseLock) {selectedPopulation.pauseLock.notifyAll();}
             pause.setText("PAUSE");
         } else {
-            selectedPopulation.paused = true;
+            selectedPopulation.setPaused(true);
             pause.setText("RESUME");
         }
     }
@@ -116,12 +116,12 @@ public class WindowController {
 
     @FXML
     void setPopulationIterationDelay() {
-        selectedPopulation.iterationDelay = (int) iterationDelaySlider.getValue();
+        selectedPopulation.setIterationDelay((int) iterationDelaySlider.getValue());
     }
 
     @FXML
     void setPopulationGrowth() {
-        selectedPopulation.growth = growthSwitch.isSelected();
+        selectedPopulation.setGrowth(growthSwitch.isSelected());
     }
 
     @FXML
@@ -146,10 +146,12 @@ public class WindowController {
             xAxis.setLowerBound(size - 100);
             xAxis.setUpperBound(size);
         }
-        if (selectedPopulation.paused) return;
+        if (selectedPopulation.isPaused()) return;
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
         seriesUpdate(menRatio, womenRatio);
+        pieChartUpdate();
+        consoleReload(values, menRatio, womenRatio);
         angle += 0.5;
         earth.setRotate(angle);
         if (selectedPopulation.stopper.update(menRatio, womenRatio)) onPauseToggle();
@@ -157,8 +159,6 @@ public class WindowController {
         menPercentage.setText(Math.round(menRatio * 8) + "/8");
         womenProgressBar.setProgress(womenRatio);
         womenPercentage.setText(Math.round(womenRatio * 6) + "/6");
-        pieChartUpdate();
-        consoleReload(values, menRatio, womenRatio);
     }
 
     void consoleReload(float[] values, float menRatio, float womenRatio) {
@@ -191,11 +191,11 @@ public class WindowController {
 
     void populationReload() {
         console.clear();
-        pause.setText((selectedPopulation.paused) ? "RESUME" : "PAUSE");
+        pause.setText((selectedPopulation.isPaused()) ? "RESUME" : "PAUSE");
         lineChartReload();
         selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
-        iterationDelaySlider.setValue(selectedPopulation.iterationDelay);
-        growthSwitch.setSelected(selectedPopulation.growth);
+        iterationDelaySlider.setValue(selectedPopulation.getIterationDelay());
+        growthSwitch.setSelected(selectedPopulation.isGrowing());
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);

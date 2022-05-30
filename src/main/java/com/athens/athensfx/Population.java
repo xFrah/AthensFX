@@ -13,27 +13,22 @@ public class Population {
     int var3;
 
     final int id;
-    volatile public boolean running = true;
-    volatile public boolean paused = false;
-    volatile public boolean growth = true;
     volatile boolean canBirth;
-    volatile transient int finished = 0;
     private int iterations = 0;
-    volatile public int iterationDelay = 0;
     transient boolean manConvenience = false;
     transient boolean womanConvenience = false;
     volatile transient float lastIterationTimeCompletion;
 
     final Stopper stopper = new Stopper(this);
     final ThreadLocalRandom r2 = ThreadLocalRandom.current(); // todo fix this shit
-    final PeopleHolder<Man> menHolder = new PeopleHolder<>();
-    final PeopleHolder<Woman> womenHolder = new PeopleHolder<>();
+    private final PopulationUpdaterLock pool = new PopulationUpdaterLock();
+    final PeopleHolder<Man> menHolder = new PeopleHolder<>(pool);
+    final PeopleHolder<Woman> womenHolder = new PeopleHolder<>(pool);
     final AtomicInteger philanderers = new AtomicInteger();
     final AtomicInteger faithfulMen = new AtomicInteger();
     final AtomicInteger fastWomen = new AtomicInteger();
     final AtomicInteger coyWomen = new AtomicInteger();
-    public final Object pauseLock = new Object();
-
+    final Object pauseLock = new Object();
 
 
     public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
@@ -42,7 +37,7 @@ public class Population {
         this.c = c;
         this.id = id;
         setupPopulation(startingPopulation, ratioMan, ratioWoman);
-        new PopulationUpdaterPool().start();
+        pool.start();
     }
 
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
@@ -72,14 +67,12 @@ public class Population {
                 lastIterationTimeCompletion};
     }
 
-    class PopulationUpdaterPool extends Thread {
-        public PopulationUpdaterPool() {
-            super("LifeRoutineLock-" + id);
-            new LifeUpdater<>(menHolder, Population.this).start();
-            new LifeUpdater<>(womenHolder, Population.this).start();
-            new EquivalentExchange<>(menHolder, Population.this).start();
-            new EquivalentExchange<>(womenHolder, Population.this).start();
-        }
+    class PopulationUpdaterLock extends Thread {
+        volatile int iterationDelay = 0;
+        volatile boolean paused = false;
+        volatile boolean growth = true;
+        volatile boolean running = true;
+        volatile transient int finished = 0;
 
         private void updateBirthValues () {
             womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
@@ -89,6 +82,8 @@ public class Population {
 
         public void run() {
             updateParameters();
+            menHolder.startThreads();
+            womenHolder.startThreads();
             long start = 0;
             try {
                 while (running) {
@@ -99,8 +94,8 @@ public class Population {
                         iterations++;
                         if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
                         TimeUnit.MILLISECONDS.sleep(iterationDelay);
-                        synchronized (Population.this) {
-                            Population.this.notifyAll();
+                        synchronized (this) {
+                            notifyAll();
                             start = System.currentTimeMillis();
                         }
                     }
@@ -110,5 +105,17 @@ public class Population {
             }
         }
     }
+
+    public boolean isGrowing() { return pool.growth; }
+
+    public int getIterationDelay() { return pool.iterationDelay; }
+
+    public boolean isPaused() { return pool.paused; }
+
+    public void setPaused(boolean b) { pool.paused = b; }
+
+    public void setGrowth(boolean b) { pool.growth = b; }
+
+    public void setIterationDelay(int value) { pool.iterationDelay = value; }
 
 }
