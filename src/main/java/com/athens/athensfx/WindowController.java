@@ -147,17 +147,21 @@ public class WindowController {
             xAxis.setUpperBound(size);
         }
         if (selectedPopulation.paused) return;
-        angle += 0.5;
-        earth.setRotate(angle);
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
+        seriesUpdate(menRatio, womenRatio);
+        angle += 0.5;
+        earth.setRotate(angle);
         if (selectedPopulation.stopper.update(menRatio, womenRatio)) onPauseToggle();
         menProgressBar.setProgress(menRatio);
         menPercentage.setText(Math.round(menRatio * 8) + "/8");
         womenProgressBar.setProgress(womenRatio);
         womenPercentage.setText(Math.round(womenRatio * 6) + "/6");
-        seriesUpdate(menRatio, womenRatio);
         pieChartUpdate();
+        consoleReload(values, menRatio, womenRatio);
+    }
+
+    void consoleReload(float[] values, float menRatio, float womenRatio) {
         console.setText("---------- iteration " + values[0] + " ----------" +
                 "\n- Population: " + (int) (values[1] + values[2]) + "(" + (int) values[1] + ", " + (int) values[2] + ")" +
                 "\n- F: " + (int) values[4] + ", P: " + (int) values[3] + ", C: " + (int) values[6] + ", S: " + (int) values[5] +
@@ -195,6 +199,11 @@ public class WindowController {
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
+        float [] info = selectedPopulation.getInfo();
+        float menRatio = info[4] / (info[3] + info[4]);
+        float womenRatio = info[6] / (info[6] + info[5]);
+        consoleReload(info, menRatio, womenRatio);
+        seriesUpdate(menRatio, womenRatio);
     }
 
     void pieChartUpdate() {
