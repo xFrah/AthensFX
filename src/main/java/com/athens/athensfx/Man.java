@@ -6,7 +6,7 @@ public class Man extends Person {
     private static final BiConsumer<Man, Integer> single = Man::single;
     private static final BiConsumer<Man, Integer> old = Person::deathChance;
     private static final BiConsumer<Man, Integer> dead = (man, i) -> {};
-    private static final BiConsumer<Man, Integer> young = Person::young;
+    private static final BiConsumer<Man, Integer> young = Person::tooYoung;
     private BiConsumer<Man, Integer> statusFunc = young;
 
     Man(boolean horny, Population pop) {
@@ -18,10 +18,9 @@ public class Man extends Person {
     }
 
     private void single(int i) {
-        deathChance(i);
         Woman woman = p.womenHolder.getRandomPerson();
         if (woman.isSingle()) { woman.setPregnant(); }
-        tooOld();
+        tooOld(i);
     }
 
     void die(int i) throws InterruptedException { p.menHolder.dead.put(i); }

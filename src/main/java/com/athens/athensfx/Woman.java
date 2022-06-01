@@ -3,17 +3,16 @@ package com.athens.athensfx;
 import java.util.function.BiConsumer;
 
 public class Woman extends Person {
-    private static final BiConsumer<Woman, Integer> single = Person::deathChance;
+    private static final BiConsumer<Woman, Integer> single = Person::tooOld;
     private static final BiConsumer<Woman, Integer> old = Person::deathChance;
     private static final BiConsumer<Woman, Integer> dead = (woman, i) -> {};
     private static final BiConsumer<Woman, Integer> pregnant = Woman::giveBirth;
-    private static final BiConsumer<Woman, Integer> young = Person::young;
+    private static final BiConsumer<Woman, Integer> young = Person::tooYoung;
     private BiConsumer<Woman, Integer> statusFunc = young;
 
     Woman(boolean horny, Population pop) {
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
-
 
     void update(int i) {
         statusFunc.accept(this, i);

@@ -22,7 +22,7 @@ public abstract class Person {
     abstract void setOld();
     abstract void setDead();
 
-    void deathChance(int i) {
+    boolean deathChance(int i) {
         if (age++ >= deathAge) {
             setDead();
             decrement();
@@ -31,21 +31,20 @@ public abstract class Person {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            return true;
         }
+        return false;
     }
 
-    void tooOld() {
-        if (age > 45) {setOld();}
+    void tooOld(int i) {
+        if (!deathChance(i) && age > 45) {setOld();}
     }
 
-    void tooYoung() { if (age == 20) {setSingle();} } // set to 30 and see what happens
+    void tooYoung(int i) {
+        if (!deathChance(i) && age == 20) {setSingle();}
+    } // set to 30 and see what happens
 
     void increment() { group.incrementAndGet(); }
     void decrement() { group.decrementAndGet(); }
-
-    public void young(Integer i) {
-        tooYoung();
-        deathChance(i);
-    }
 
 }
