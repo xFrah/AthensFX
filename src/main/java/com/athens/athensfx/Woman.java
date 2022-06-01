@@ -23,7 +23,7 @@ public class Woman extends Person {
         try {
             setSingle();
             if (!p.canBirth) return;
-            if (p.menHolder.randomSex()) {
+            if (p.womenHolder.randomSex()) { // menHolder?
                 p.menHolder.newborns.put(new Man(p.manConvenience, p));
             } else {
                 p.womenHolder.newborns.put(new Woman(p.womanConvenience, p));

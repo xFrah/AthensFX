@@ -36,11 +36,10 @@ public class PeopleHolder <S extends Person> {
 
     public S getRandomPerson() {
         return alive.get(tlr.nextInt(alive.size()));
-
     }
 
     class PeopleUpdater extends Thread {
-        PeopleUpdater () { tlr = ThreadLocalRandom.current(); }
+        PeopleUpdater () { tlr = ThreadLocalRandom.current(); } // is this efficient or not?
 
         public void run() {
             try {
