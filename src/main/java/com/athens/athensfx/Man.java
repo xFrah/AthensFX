@@ -1,24 +1,24 @@
 package com.athens.athensfx;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class Man extends Person {
-    private static final Consumer<Man> single = Man::single;
-    private static final Consumer<Man> old = (man) -> {};
-    private static final Consumer<Man> dead = (man) -> {};
-    private static final Consumer<Man> young = Person::tooYoung;
-    private Consumer<Man> statusFunc = young;
+    private static final BiConsumer<Man, Integer> single = Man::single;
+    private static final BiConsumer<Man, Integer> old = Person::deathChance;
+    private static final BiConsumer<Man, Integer> dead = (man, i) -> {};
+    private static final BiConsumer<Man, Integer> young = Person::young;
+    private BiConsumer<Man, Integer> statusFunc = young;
 
     Man(boolean horny, Population pop) {
         super(pop, (horny) ? pop.philanderers: pop.faithfulMen);
     }
 
-    void update(int i) throws InterruptedException {
-        statusFunc.accept(this);
-        deathChance(i);
+    void update(int i) {
+        statusFunc.accept(this, i);
     }
 
-    private void single() {
+    private void single(int i) {
+        deathChance(i);
         Woman woman = p.womenHolder.getRandomPerson();
         if (woman.isSingle()) { woman.setPregnant(); }
         tooOld();
