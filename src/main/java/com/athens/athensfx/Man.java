@@ -19,7 +19,7 @@ public class Man extends Person {
     }
 
     private void single() {
-        Woman woman = p.getRandomWoman();
+        Woman woman = p.womenHolder.getRandomPerson();
         if (woman.isSingle()) { woman.setPregnant(); }
         tooOld();
     }

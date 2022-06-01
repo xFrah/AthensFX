@@ -3,6 +3,7 @@ package com.athens.athensfx;
 import javafx.scene.chart.XYChart;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PeopleHolder <S extends Person> {
     private final Population.PopulationUpdaterLock updaterPool;
@@ -11,6 +12,7 @@ public class PeopleHolder <S extends Person> {
     final XYChart.Series<Number,Number> series = new XYChart.Series<>();
     final ArrayList<S> alive = new ArrayList<>();
     private boolean started = false;
+    public ThreadLocalRandom tlr;
 
     public PeopleHolder(Population.PopulationUpdaterLock pool) { this.updaterPool = pool; }
 
@@ -28,7 +30,17 @@ public class PeopleHolder <S extends Person> {
         }
     }
 
+    public boolean randomSex () {
+        return tlr.nextBoolean();
+    }
+
+    public S getRandomPerson() {
+        return alive.get(tlr.nextInt(alive.size()));
+
+    }
+
     class PeopleUpdater extends Thread {
+        PeopleUpdater () { tlr = ThreadLocalRandom.current(); }
 
         public void run() {
             try {

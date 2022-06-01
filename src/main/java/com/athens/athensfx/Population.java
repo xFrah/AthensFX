@@ -20,7 +20,6 @@ public class Population {
     volatile transient float lastIterationTimeCompletion;
 
     final Stopper stopper = new Stopper(this);
-    final ThreadLocalRandom r2 = ThreadLocalRandom.current(); // todo fix this shit
     private final PopulationUpdaterLock pool = new PopulationUpdaterLock();
     final PeopleHolder<Man> menHolder = new PeopleHolder<>(pool);
     final PeopleHolder<Woman> womenHolder = new PeopleHolder<>(pool);
@@ -47,10 +46,6 @@ public class Population {
         for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioMan); i++) {menHolder.alive.add(new Man(true, this));}
         for (int i = 0; i < ((float) startingPopulation/2)*ratioWoman; i++) {womenHolder.alive.add(new Woman(false, this));}
         for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioWoman); i++) {womenHolder.alive.add(new Woman(true, this));}
-    }
-
-    Woman getRandomWoman() {
-        return womenHolder.alive.get(r2.nextInt(womenHolder.alive.size()));
     }
 
     void updateParameters() {
