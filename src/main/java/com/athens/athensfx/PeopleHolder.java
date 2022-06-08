@@ -33,6 +33,9 @@ public class PeopleHolder <S extends Person> {
         }
     }
 
+    // todo could as well use a simple LinkedList, check if its empty in the synchronized block and then do the deed
+    // todo this way we don't synchronize twice and we don't create an Integer object.
+
   //synchronized void newSoul (S soul) {
   //    if (dead.isEmpty()) {
   //        alive.add(soul);
