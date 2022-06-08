@@ -17,7 +17,7 @@ public abstract class Person {
     }
 
     abstract void update(int i) throws InterruptedException;
-    abstract void die(int i) throws InterruptedException;
+    abstract void die(int i) ;
     abstract void setSingle();
     abstract void setOld();
     abstract void setDead();
@@ -26,11 +26,7 @@ public abstract class Person {
         if (age++ >= deathAge) {
             setDead();
             decrement();
-            try {
-                die(i);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            die(i);
             return true;
         }
         return false;
