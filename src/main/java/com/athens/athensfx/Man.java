@@ -18,8 +18,11 @@ public class Man extends Person {
     }
 
     private void single(int i) {
-        Woman woman = p.womenHolder.getRandomPerson();
-        if (woman.isSingle()) { woman.setPregnant(); }
+        if (p.min > i || i > p.max) return;
+        Woman woman = p.womenHolder.alive.get(i);
+        if (woman.isSingle()) {
+            woman.setPregnant();
+        }
         tooOld(i);
     }
 
