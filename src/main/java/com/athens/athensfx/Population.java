@@ -59,9 +59,8 @@ public class Population {
     public float[] getInfo() {
         return new float[]
                 {iterations, menHolder.alive.size(), womenHolder.alive.size(),
-                philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
-                womenHolder.newborns.size() + menHolder.newborns.size(), womenHolder.dead.size() + menHolder.dead.size(),
-                lastIterationTimeCompletion};
+                 philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
+                 womenHolder.dead.size() + menHolder.dead.size(), lastIterationTimeCompletion};
     }
 
     class PopulationUpdaterLock extends Thread {

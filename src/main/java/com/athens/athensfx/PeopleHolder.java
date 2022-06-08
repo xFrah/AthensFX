@@ -7,7 +7,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PeopleHolder <S extends Person> {
     private final Population.PopulationUpdaterLock updaterPool;
-    final LinkedBlockingQueue<S> newborns = new LinkedBlockingQueue<>();
     final LinkedBlockingQueue<Integer> dead = new LinkedBlockingQueue<>();
     final XYChart.Series<Number,Number> series = new XYChart.Series<>();
     final ArrayList<S> alive = new ArrayList<>();
@@ -15,10 +14,6 @@ public class PeopleHolder <S extends Person> {
     public ThreadLocalRandom tlr;
 
     public PeopleHolder(Population.PopulationUpdaterLock pool) { this.updaterPool = pool; }
-
-    void exchangeSouls() {
-        newborns.drainTo(alive);
-    }
 
     void startThreads() {
         if (!started) {
@@ -41,10 +36,6 @@ public class PeopleHolder <S extends Person> {
         return tlr.nextBoolean();
     }
 
-    public S getRandomPerson() {
-        return alive.get(tlr.nextInt(alive.size()));
-    }
-
     class PeopleUpdater extends Thread {
         PeopleUpdater () { tlr = ThreadLocalRandom.current(); } // is this efficient or not?
 
@@ -54,7 +45,6 @@ public class PeopleHolder <S extends Person> {
                     for (int i = 0; i < alive.size(); i++) {
                         alive.get(i).update(i);
                     }
-                    exchangeSouls();
                     synchronized (updaterPool) {
                         updaterPool.finished++;
                         updaterPool.wait();

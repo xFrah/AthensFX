@@ -163,11 +163,11 @@ public class WindowController {
 
     void consoleReload(float[] values, float menRatio, float womenRatio) {
         console.setText("---------- iteration " + values[0] + " ----------" +
-                "\n- Population: " + (int) (((values[1] + values[2]) - values[8])) +
+                "\n- Population: " + (int) (((values[1] + values[2]) - values[7])) +
                 "\n- F: " + (int) values[4] + ", P: " + (int) values[3] + ", C: " + (int) values[6] + ", S: " + (int) values[5] +
                 "\n- Ratio: " + menRatio + ", " + womenRatio +
-                "\n- Speed: " + (int) (((values[1]+values[2]) / values[9]) * 1000) + " p/s"+ // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
-                "\n- Execution Time: " + (int) values[9] + " ms");
+                "\n- Speed: " + (int) (((values[1]+values[2]) / values[8]) * 1000) + " p/s"+ // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
+                "\n- Execution Time: " + (int) values[8] + " ms");
     }
 
     private void seriesUpdate(float menRatio, float womenRatio) {
