@@ -24,9 +24,16 @@ public class PeopleHolder <S extends Person> {
         if (!started) {
             started = true;
             new PeopleUpdater().start();
-            new EquivalentExchange().start();
         } else {
             System.out.println("fuck off");
+        }
+    }
+
+    synchronized void newSoul (S soul) {
+        if (dead.isEmpty()) {
+            alive.add(soul);
+        } else {
+            alive.set(dead.poll(), soul);
         }
     }
 
@@ -53,19 +60,6 @@ public class PeopleHolder <S extends Person> {
                         updaterPool.wait();
                     }
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    class EquivalentExchange extends Thread {
-
-        public void run() {
-            try {
-                while (updaterPool.running) { // put an interrupt instead
-                    alive.set(dead.take(), newborns.take());
-                } // efficiency?
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

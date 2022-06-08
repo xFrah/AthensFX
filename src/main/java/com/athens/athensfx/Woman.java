@@ -19,18 +19,13 @@ public class Woman extends Person {
     }
 
     void giveBirth(int i) {
-        try {
-            setSingle();
-            if (!p.canBirth) return;
-            if (p.womenHolder.randomSex()) { // menHolder?
-                p.menHolder.newborns.put(new Man(p.manConvenience, p));
-            } else {
-                p.womenHolder.newborns.put(new Woman(p.womanConvenience, p));
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        setSingle();
+        if (!p.canBirth) return;
+        if (p.womenHolder.randomSex()) { // menHolder?
+            p.menHolder.newSoul(new Man(p.manConvenience, p));
+        } else {
+            p.womenHolder.newSoul(new Woman(p.womanConvenience, p));
         }
-
     }
 
     public boolean isSingle() { return statusFunc == single; }
