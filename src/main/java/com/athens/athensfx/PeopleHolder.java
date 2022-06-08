@@ -32,6 +32,18 @@ public class PeopleHolder <S extends Person> {
         }
     }
 
+  //void newSoul (S soul) {
+  //    if (dead.isEmpty()) {
+  //        alive.add(soul);
+  //    } else {
+  //        try {
+  //            alive.set(dead.take(), soul);
+  //        } catch (InterruptedException e) {
+  //            throw new RuntimeException(e);
+  //        }
+  //    }
+  //}
+
     public boolean randomSex () {
         return tlr.nextBoolean();
     }
