@@ -34,7 +34,7 @@ public class Woman extends Person {
 
     public void setSingle() { statusFunc = single; }
 
-    void die(int i) throws InterruptedException { p.womenHolder.dead.put(i); }
+    void die(int i) { p.womenHolder.dead.add(i); }
 
     void setOld() { statusFunc = old; }
 

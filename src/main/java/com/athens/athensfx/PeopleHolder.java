@@ -2,12 +2,12 @@ package com.athens.athensfx;
 
 import javafx.scene.chart.XYChart;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PeopleHolder <S extends Person> {
     private final Population.PopulationUpdaterLock updaterPool;
-    final LinkedBlockingQueue<Integer> dead = new LinkedBlockingQueue<>();
+    final ConcurrentLinkedQueue<Integer> dead = new ConcurrentLinkedQueue<>();
     final XYChart.Series<Number,Number> series = new XYChart.Series<>();
     final ArrayList<S> alive = new ArrayList<>();
     private boolean started = false;
@@ -34,7 +34,17 @@ public class PeopleHolder <S extends Person> {
     }
 
     // todo could as well use a simple LinkedList, check if its empty in the synchronized block and then do the deed
-    // todo this way we don't synchronize twice and we don't create an Integer object.
+    // todo this way we don't synchronize twice and we don't create an Integer object(fuck me we are not creating an integer).
+    // todo we are only taking the reference from the list. but what if it's null? is it a new object?
+
+  //void newSoul (S soul) {
+  //    Integer passedSoul = dead.poll();
+  //    if (passedSoul == null) {
+  //        alive.add(soul);
+  //    } else {
+  //        alive.set(passedSoul, soul);
+  //    }
+  //}
 
   //synchronized void newSoul (S soul) {
   //    if (dead.isEmpty()) {

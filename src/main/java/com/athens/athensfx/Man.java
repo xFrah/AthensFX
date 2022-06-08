@@ -26,7 +26,7 @@ public class Man extends Person {
         tooOld(i);
     }
 
-    void die(int i) throws InterruptedException { p.menHolder.dead.put(i); }
+    void die(int i) { p.menHolder.dead.add(i); }
 
     void setSingle() { statusFunc = single; }
 
