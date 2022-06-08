@@ -47,7 +47,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
 
     public static void windowSetup() throws URISyntaxException {
         controller.bakeThePie();
-        new WindowUpdater("WindowUpdater").start();
+        new WindowUpdater().start();
         PhongMaterial earthMaterial = new PhongMaterial();
         earthMaterial.setDiffuseMap(new Image(Genesis.class.getResource("earth-texture.jpg").toURI().toString()));
         controller.earth.setMaterial(earthMaterial);
@@ -58,9 +58,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
     static class WindowUpdater extends Thread {
         public static int refreshDelay = 100;
 
-        public WindowUpdater(String name) {
-            super(name);
-        }
+        public WindowUpdater() { super("WindowUpdater"); }
 
         public void run() {
             try {

@@ -71,6 +71,11 @@ public class Population {
         volatile transient int finished = 0;
         private final ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
+        PopulationUpdaterLock () {
+            super("PopulationUpdaterLock");
+        }
+
+
         private void updateBirthValues () {
             womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
@@ -84,8 +89,6 @@ public class Population {
             int span = lower/4;
             max = tlr.nextInt(span, lower/2);
             min = max - span;
-
-            //System.out.println(iterations + ": " + offset + "(" + (sizeWoman - sizeMan) + " = " + sizeWoman + " - " + sizeMan + "), " + births);
         }
 
         public void run() {

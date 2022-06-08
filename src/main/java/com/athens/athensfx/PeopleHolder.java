@@ -24,13 +24,22 @@ public class PeopleHolder <S extends Person> {
         }
     }
 
-    synchronized void newSoul (S soul) {
-        if (dead.isEmpty()) {
+    void newSoul (S soul) {
+        Integer passedSoul = dead.poll();
+        if (passedSoul == null) {
             alive.add(soul);
         } else {
-            alive.set(dead.poll(), soul);
+            alive.set(passedSoul, soul);
         }
     }
+
+  //synchronized void newSoul (S soul) {
+  //    if (dead.isEmpty()) {
+  //        alive.add(soul);
+  //    } else {
+  //        alive.set(dead.poll(), soul);
+  //    }
+  //}
 
   //void newSoul (S soul) {
   //    if (dead.isEmpty()) {
@@ -49,7 +58,10 @@ public class PeopleHolder <S extends Person> {
     }
 
     class PeopleUpdater extends Thread {
-        PeopleUpdater () { tlr = ThreadLocalRandom.current(); } // is this efficient or not?
+        PeopleUpdater () {
+            super("PeopleUpdater");
+            tlr = ThreadLocalRandom.current();
+        } // is this efficient or not?
 
         public void run() {
             try {
