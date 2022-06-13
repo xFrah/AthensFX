@@ -13,6 +13,9 @@ import org.controlsfx.control.ToggleSwitch;
 import static com.athens.athensfx.Genesis.selectedPopulation;
 
 public class WindowController {
+    // This is the window controller class. All the interactions
+    // (create new population, switch between populations, etc.)
+    // are handled here and the respective methods are called to perform those actions.
 
     @FXML
     TextArea console;
@@ -47,7 +50,7 @@ public class WindowController {
     @FXML
     ProgressBar womenProgressBar;
     @FXML
-    LineChart<Number,Number> ratioChart;
+    LineChart<Number, Number> ratioChart;
     @FXML
     Slider iterationDelaySlider;
     @FXML
@@ -70,29 +73,59 @@ public class WindowController {
     Slider cSlider;
     @FXML
     Sphere earth;
-    private double angle = 0.0;
     ValueAxis<Number> xAxis;
     PieChart.Data p1 = new PieChart.Data("Faithful", 1);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 1);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 1);
     PieChart.Data p4 = new PieChart.Data("FastWoman", 1);
+    private double angle = 0.0;
 
     @FXML
     protected void onCreateNew() {
+        // This method handles the createNew button press.
+        // It calls the createPopulation method in Genesis with all the parameters entered by the user.
+        // This method also sets the a,b,c labels, refreshed the window reflecting the changes
+        // and closes the population creation menu.
         Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()), menRatioSlider.getValue(), womenRatioSlider.getValue());
         aLabel.setText(a.getText());
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
         populationReload();
         dropDown.setExpanded(false);
-        if (pause.isDisabled()) { buttonsStart(); }
+        if (pause.isDisabled()) {
+            buttonsStart();
+        }
+    }
+
+    @FXML
+    protected void onPreviousPopulation() {
+        // This handles the previousPopulation click. It simply refreshes the view and changes the selectedPopulation.
+//      // Obviously this is done only if there is a previous population.
+        if (Genesis.selectedPopulationIndex == 0) return;
+        selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
+        populationReload();
+    }
+
+    @FXML
+    protected void onNextPopulation() {
+        // This handles the nextPopulation click. It simply refreshes the view and changes the selectedPopulation.
+//      // Obviously this is done only if there is a next population.
+        if (Genesis.selectedPopulationIndex >= Genesis.populations.size() - 1) return;
+        selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
+        populationReload();
     }
 
     @FXML
     protected void onPauseToggle() {
+        // This method handles the pause/play button.
+        // If the population is paused, the run method of PopulationUpdaterLock is put on wait
+        // until the user presses the resume button.
+        // At that point this method notifies the thread that will then resume.
         if (selectedPopulation.isPaused()) {
             selectedPopulation.setPaused(false);
-            synchronized (selectedPopulation.pauseLock) {selectedPopulation.pauseLock.notifyAll();}
+            synchronized (selectedPopulation.pauseLock) {
+                selectedPopulation.pauseLock.notifyAll(); // resume the process
+            }
             pause.setText("PAUSE");
         } else {
             selectedPopulation.setPaused(true);
@@ -101,46 +134,52 @@ public class WindowController {
     }
 
     @FXML
-    protected void onPreviousPopulation() {
-        if (Genesis.selectedPopulationIndex == 0) return;
-        selectedPopulation = Genesis.populations.get(--Genesis.selectedPopulationIndex);
-        populationReload();
-    }
-
-    @FXML
-    protected void onNextPopulation() {
-        if (Genesis.selectedPopulationIndex >= Genesis.populations.size() - 1) return;
-        selectedPopulation = Genesis.populations.get(++Genesis.selectedPopulationIndex);
-        populationReload();
-    }
-
-    @FXML
-    void setPopulationIterationDelay() {
-        selectedPopulation.setIterationDelay((int) iterationDelaySlider.getValue());
-    }
-
-    @FXML
     void setPopulationGrowth() {
+        // This handles the growthSwitch toggle switch, and enhances/reduces the population's growth rate.
+        // Keep in mind that keeping the growth rate on "high" can lead to memory problems very quickly due to the
+        // speed of the program (that is capable of processing up to 120+ million people per second on the test machines).
+        // It is advised to keep the growth on low for machines with little memory/computational capabilities to
+        // avoid running out of memory right away.
         selectedPopulation.setGrowth(growthSwitch.isSelected());
     }
 
     @FXML
+    void setPopulationIterationDelay() {
+        // This handles the changes to iterationDelaySlider and so it sets the delay to the iteration
+        // (how much time is added after the computation is completed).
+        // It can be used to slow down the program for a more in-depth look at how each iteration changes the data.
+        selectedPopulation.setIterationDelay((int) iterationDelaySlider.getValue());
+    }
+
+    @FXML
     void setRefreshDelay() {
+        // This handles the changes to refreshDelaySlider and so it sets the data refresh delay.
+        // It can be useful on low-end machines to save up on computational resources.
         Genesis.WindowUpdater.refreshDelay = (int) refreshDelaySlider.getValue();
     }
 
     @FXML
     void setParameters() {
-        selectedPopulation.a = (int) aSlider.getValue();
-        selectedPopulation.b = (int) bSlider.getValue();
-        selectedPopulation.c = (int) cSlider.getValue();
+        // This method updates the a,b,c parameters when the user changes them using the sliders.
+        // The parameters are updated using the updateParameters method in Population.
+        // (check the method in Population for more info).
+        // It also updates the a,b,c labels on the window
+        int aNew = (int) aSlider.getValue();
+        int bNew = (int) bSlider.getValue();
+        int cNew = (int) cSlider.getValue();
+
+        selectedPopulation.a = aNew;
+        selectedPopulation.b = bNew;
+        selectedPopulation.c = cNew;
         selectedPopulation.updateParameters();
-        aLabel.setText(String.valueOf(selectedPopulation.a));
-        bLabel.setText(String.valueOf(selectedPopulation.b));
-        cLabel.setText(String.valueOf(selectedPopulation.c));
+
+        aLabel.setText(String.valueOf(aNew));
+        bLabel.setText(String.valueOf(bNew));
+        cLabel.setText(String.valueOf(cNew));
     }
 
     void setInfo(float[] values) {
+        // todo write comment for this
         int size = selectedPopulation.womenHolder.series.getData().size();
         if (size > 100) { // TODO this needs an optimization
             xAxis.setLowerBound(size - 100);
@@ -162,20 +201,23 @@ public class WindowController {
     }
 
     void consoleReload(float[] values, float menRatio, float womenRatio) {
+        // This method refreshes the "console" you can see on the window, updating the "logs" every iteration.
         console.setText("---------- iteration " + values[0] + " ----------" +
                 "\n- Population: " + (int) (((values[1] + values[2]) - values[7])) +
                 "\n- F: " + (int) values[4] + ", P: " + (int) values[3] + ", C: " + (int) values[6] + ", S: " + (int) values[5] +
                 "\n- Ratio: " + menRatio + ", " + womenRatio +
-                "\n- Speed: " + (int) (((values[1]+values[2]) / values[8]) * 1000) + " p/s"+ // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
+                "\n- Speed: " + (int) (((values[1] + values[2]) / values[8]) * 1000) + " p/s" + // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
                 "\n- Execution Time: " + (int) values[8] + " ms");
     }
 
     private void seriesUpdate(float menRatio, float womenRatio) {
+        // This method updates the chart series with the new ratios from the last iteration.
         selectedPopulation.menHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.menHolder.series.getData().size(), menRatio));
         selectedPopulation.womenHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.womenHolder.series.getData().size(), womenRatio));
     }
 
     void lineChartReload() {
+        // This method updates the line chart
         ratioChart.getData().clear();
         ratioChart.getData().add(selectedPopulation.womenHolder.series);
         ratioChart.getData().add(selectedPopulation.menHolder.series);
@@ -190,6 +232,7 @@ public class WindowController {
     }
 
     void populationReload() {
+        // This method updates the window with the selected population's info
         console.clear();
         pause.setText((selectedPopulation.isPaused()) ? "RESUME" : "PAUSE");
         lineChartReload();
@@ -199,7 +242,7 @@ public class WindowController {
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
-        float [] info = selectedPopulation.getInfo();
+        float[] info = selectedPopulation.getInfo();
         float menRatio = info[4] / (info[3] + info[4]);
         float womenRatio = info[6] / (info[6] + info[5]);
         consoleReload(info, menRatio, womenRatio);
@@ -207,13 +250,20 @@ public class WindowController {
     }
 
     void pieChartUpdate() {
+        // This method updates the pie chart values with the latest values.
         p1.setPieValue(selectedPopulation.faithfulMen.get());
         p2.setPieValue(selectedPopulation.philanderers.get());
         p3.setPieValue(selectedPopulation.coyWomen.get());
         p4.setPieValue(selectedPopulation.fastWomen.get());
     }
 
-    void buttonsStart () {
+    public void bakeThePie() {
+        // This method updates the pie chart in the window.
+        pieChart.setData(FXCollections.observableArrayList(p1, p2, p3, p4));
+    }
+
+    void buttonsStart() {
+        // This method enables the buttons, when a population is started.
         aSlider.setDisable(false);
         bSlider.setDisable(false);
         cSlider.setDisable(false);
@@ -222,8 +272,6 @@ public class WindowController {
         growthSwitch.setDisable(false);
     }
 
-    public void bakeThePie() {
-        pieChart.setData(FXCollections.observableArrayList(p1, p2, p3, p4));
-    }
+
 
 }

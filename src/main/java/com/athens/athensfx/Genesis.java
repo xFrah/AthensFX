@@ -18,34 +18,25 @@ import java.util.function.Consumer;
 
 public class Genesis extends Application { // TODO stop all threads if window is closed
 
-    static ArrayList<Population> populations = new ArrayList<>();
-    public static int selectedPopulationIndex;
-    public static Population selectedPopulation = null;
-    private static WindowController controller;
+    static ArrayList<Population> populations = new ArrayList<>(); // This is where all the populations are stored.
+    public static int selectedPopulationIndex;  // Index of the currently selected population (the one showed on the screen)
+    public static Population selectedPopulation = null; // Selected population object
+    private static WindowController controller; // window controller
 
     @Override
     public void start(Stage stage) throws IOException, URISyntaxException {
+        // This method sets up the window
         FXMLLoader fxmlLoader = new FXMLLoader(Genesis.class.getResource("athens-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("AthensFX v1.1");
         stage.setScene(scene);
         stage.show();
         controller = fxmlLoader.getController();
         windowSetup();
     }
-
-    public static void main(String[] args) {
-        launch();
-    }
-
-    public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman) {
-        Population p = new Population(a, b, c, ratioMan, ratioWoman, 100000, populations.size());
-        populations.add(p);
-        selectedPopulationIndex = populations.size() - 1;
-        selectedPopulation = p;
-    }
-
     public static void windowSetup() throws URISyntaxException {
+        // This method does further window setup
+        // for example, starts the window updater thread
         controller.bakeThePie();
         new WindowUpdater().start();
         PhongMaterial earthMaterial = new PhongMaterial();
@@ -55,7 +46,23 @@ public class Genesis extends Application { // TODO stop all threads if window is
         controller.xAxis = (ValueAxis<Number>) controller.ratioChart.getXAxis();
     }
 
+    public static void main(String[] args) {
+        launch();
+    }
+
+    public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman) {
+        // This method creates a new population, and it's called by the onCreateNew method in WindowController
+        // The onCreateNew method passes all the parameters that the user put in during the configuration.
+        Population p = new Population(a, b, c, ratioMan, ratioWoman, 100000, populations.size());
+        populations.add(p);
+        selectedPopulationIndex = populations.size() - 1;
+        selectedPopulation = p;
+    }
+
+
+
     static class WindowUpdater extends Thread {
+        // This is the window updater thread that refreshes the window showing updated info on the population
         public static int refreshDelay = 100;
 
         public WindowUpdater() { super("WindowUpdater"); }
