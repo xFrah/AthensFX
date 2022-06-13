@@ -33,6 +33,8 @@ public class Population {
 
 
     public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
+        // This is the population constructor. It is called by createPopulation in Genesis and takes in all the parameters
+        // the user set up during the creation of the population.
         this.a = a;
         this.b = b;
         this.c = c;
@@ -41,9 +43,11 @@ public class Population {
         pool.start();
     }
 
-    private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) { // creates the first people
+    private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) {
+        // This method is called by the constructor, and it crates the first people according to the settings the user
+        // chose for the simulation.
         menHolder.series.setName("Men ratio");
-        womenHolder.series.setName("Women ratios");
+        womenHolder.series.setName("Women ratio");
         for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {menHolder.alive.add(new Man(false, this));}
         for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioMan); i++) {menHolder.alive.add(new Man(true, this));}
         for (int i = 0; i < ((float) startingPopulation/2)*ratioWoman; i++) {womenHolder.alive.add(new Woman(false, this));}
@@ -51,12 +55,16 @@ public class Population {
     }
 
     void updateParameters() {
+        // This method updates the three variables that are actually used to compute Men and Women convenience.
+        // We just compute and store these directly for readability and ease of maintenance.
         var1 = a - (b/2) - c;
         var2 = a - (b/2);
         var3 = a - b;
     }
 
     public float[] getInfo() {
+        // This method gives all the info about the population. It is called by populationReload in WindowController
+        // and is used to update the values that are shown on the charts.
         return new float[]
                 {iterations, menHolder.alive.size(), womenHolder.alive.size(),
                  philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
@@ -64,11 +72,12 @@ public class Population {
     }
 
     class PopulationUpdaterLock extends Thread {
+        // todo what does this class do
         volatile int iterationDelay = 0;
         volatile boolean paused = false;
         volatile boolean growth = true;
         volatile boolean running = true;
-        volatile transient int finished = 0;
+        volatile transient int finished = 0; // todo write the different values of finished and what they are for
         private final ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
         PopulationUpdaterLock () {
@@ -77,7 +86,14 @@ public class Population {
 
 
         private void updateBirthValues () {
-            womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get(); // var3 is there for readability
+            // This method is called by the run method of this class,
+            // and it computes how the men and women should become when they are born.
+            // The percentages of the people from one sex influence the ones from the other sex, so they will reach an
+            // equilibrium only if a,b, and c are suited to keep the population going.
+            // (the three variables are actually what impacts the person's gain the most)
+            // This method also decides whether a new person can be born or not,
+            // according to the growth toggle switch setting.
+            womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get();
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
             canBirth = growth || (menHolder.dead.size() + womenHolder.dead.size()) > 0;
         }
@@ -99,16 +115,18 @@ public class Population {
             long start = System.currentTimeMillis();
             try {
                 while (running) {
-                    updateBirthValues();
+                    updateBirthValues(); // every iteration update the birth values.
                     if (finished == 2) {
                         lastIterationTimeCompletion = System.currentTimeMillis() - start;
                         // System.out.println("(" + min + ", " + max + ") = " + (max - min));
                         finished = 0;
                         iterations++;
                         randomOffset();
+                        // if the population is paused, make the thread wait until it's resumed.
                         if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
-                        TimeUnit.MILLISECONDS.sleep(iterationDelay);
+                        TimeUnit.MILLISECONDS.sleep(iterationDelay); // sleep for "delay" milliseconds
                         synchronized (this) {
+                            // todo explain what this does
                             start = System.currentTimeMillis();
                             notifyAll();
                         }
