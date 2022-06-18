@@ -23,7 +23,6 @@ public class Woman extends Person {
     void giveBirth(int i) {
         // This method creates a new human being. It is called by
         setSingle();
-        if (!p.canBirth) return;
         if (p.womenHolder.randomSex()) { // menHolder?
             p.menHolder.newSoul(new Man(p.manConvenience, p));
         } else {

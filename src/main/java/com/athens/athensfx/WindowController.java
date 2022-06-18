@@ -57,8 +57,6 @@ public class WindowController {
     @FXML
     Slider iterationDelaySlider;
     @FXML
-    ToggleSwitch growthSwitch;
-    @FXML
     Slider refreshDelaySlider;
     @FXML
     PieChart pieChart;
@@ -148,15 +146,6 @@ public class WindowController {
         populationReload();
     }
 
-    @FXML
-    void setPopulationGrowth() {
-        // This handles the growthSwitch toggle switch, and enhances/reduces the population's growth rate.
-        // Keep in mind that keeping the growth rate on "high" can lead to memory problems very quickly due to the
-        // speed of the program (that is capable of processing up to 120+ million people per second on the test machines).
-        // It is advised to keep the growth on low for machines with little memory/computational capabilities to
-        // avoid running out of memory right away.
-        selectedPopulation.setGrowth(growthSwitch.isSelected());
-    }
 
     @FXML
     void setPopulationIterationDelay() {
@@ -253,7 +242,6 @@ public class WindowController {
         lineChartReload();
         selectedPopulationID.setText(String.valueOf(selectedPopulationIndex+1) + "/" + String.valueOf(Genesis.populations.size()));
         iterationDelaySlider.setValue(selectedPopulation.getIterationDelay());
-        growthSwitch.setSelected(selectedPopulation.isGrowing());
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
@@ -285,7 +273,6 @@ public class WindowController {
         cSlider.setDisable(false);
         pause.setDisable(false);
         iterationDelaySlider.setDisable(false);
-        growthSwitch.setDisable(false);
     }
 
 

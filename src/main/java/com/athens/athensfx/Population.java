@@ -15,7 +15,6 @@ public class Population {
     volatile transient int max = 0;
     volatile transient int min = 0;
     final int id;
-    volatile boolean canBirth;
     private int iterations = 0;
     transient boolean manConvenience = false;
     transient boolean womanConvenience = false;
@@ -79,7 +78,6 @@ public class Population {
         // todo what does this class do
         volatile int iterationDelay = 0;
         volatile boolean paused = false;
-        volatile boolean growth = true;
         volatile boolean running = true;
         volatile transient int finished = 0; // todo write the different values of finished and what they are for
         private final ThreadLocalRandom tlr = ThreadLocalRandom.current();
@@ -99,7 +97,6 @@ public class Population {
             // according to the growth toggle switch setting.
             womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get();
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
-            canBirth = growth || (menHolder.dead.size() + womenHolder.dead.size()) > 0;
         }
 
         private void randomOffset() {
@@ -143,15 +140,11 @@ public class Population {
     }
 
     // getters and setters to increase readability and get stuff to show on the window
-    public boolean isGrowing() { return pool.growth; }
-
     public int getIterationDelay() { return pool.iterationDelay; }
 
     public boolean isPaused() { return pool.paused; }
 
     public void setPaused(boolean b) { pool.paused = b; }
-
-    public void setGrowth(boolean b) { pool.growth = b; }
 
     public void setIterationDelay(int value) { pool.iterationDelay = value; }
 
