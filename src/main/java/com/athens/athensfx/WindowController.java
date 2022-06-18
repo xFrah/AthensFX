@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import org.controlsfx.control.ToggleSwitch;
 
 import static com.athens.athensfx.Genesis.selectedPopulation;
+import static com.athens.athensfx.Genesis.selectedPopulationIndex;
 
 public class WindowController {
     // This is the window controller class. All the interactions
@@ -37,6 +38,8 @@ public class WindowController {
     Button previousPopulation;
     @FXML
     Button pause;
+    @FXML
+    Button kill;
     @FXML
     TextField a;
     @FXML
@@ -131,6 +134,18 @@ public class WindowController {
             selectedPopulation.setPaused(true);
             pause.setText("RESUME");
         }
+    }
+
+    @FXML
+    protected void onKill(){
+        selectedPopulation.stop();
+        Genesis.populations.remove(selectedPopulation);
+        if((Genesis.populations.size() == selectedPopulationIndex)){
+            selectedPopulationIndex--;
+        }
+        selectedPopulation = Genesis.populations.get(
+                selectedPopulationIndex);
+        populationReload();
     }
 
     @FXML
@@ -236,7 +251,7 @@ public class WindowController {
         console.clear();
         pause.setText((selectedPopulation.isPaused()) ? "RESUME" : "PAUSE");
         lineChartReload();
-        selectedPopulationID.setText(String.valueOf(Genesis.selectedPopulationIndex));
+        selectedPopulationID.setText(String.valueOf(selectedPopulationIndex+1) + "/" + String.valueOf(Genesis.populations.size()));
         iterationDelaySlider.setValue(selectedPopulation.getIterationDelay());
         growthSwitch.setSelected(selectedPopulation.isGrowing());
         aSlider.setValue(selectedPopulation.a);
@@ -247,6 +262,7 @@ public class WindowController {
         float womenRatio = info[6] / (info[6] + info[5]);
         consoleReload(info, menRatio, womenRatio);
         seriesUpdate(menRatio, womenRatio);
+        kill.setDisable(Genesis.populations.size() == 1);
     }
 
     void pieChartUpdate() {
@@ -271,6 +287,7 @@ public class WindowController {
         iterationDelaySlider.setDisable(false);
         growthSwitch.setDisable(false);
     }
+
 
 
 

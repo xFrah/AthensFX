@@ -11,14 +11,17 @@ public class Woman extends Person {
     private BiConsumer<Woman, Integer> statusFunc = young;
 
     Woman(boolean horny, Population pop) {
+        // This is the constructor for woman.
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
 
     void update(int i) {
+        // todo comment this and explain what biConsumer is... actually explain the whole thing
         statusFunc.accept(this, i);
     }
 
     void giveBirth(int i) {
+        // This method creates a new human being. It is called by
         setSingle();
         if (!p.canBirth) return;
         if (p.womenHolder.randomSex()) { // menHolder?

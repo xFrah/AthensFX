@@ -54,6 +54,10 @@ public class Population {
         for (int i = 0; i < ((float) startingPopulation/2)*(1 - ratioWoman); i++) {womenHolder.alive.add(new Woman(true, this));}
     }
 
+    public void stop() {
+        pool.running = false;
+    }
+
     void updateParameters() {
         // This method updates the three variables that are actually used to compute Men and Women convenience.
         // We just compute and store these directly for readability and ease of maintenance.
@@ -138,6 +142,7 @@ public class Population {
         }
     }
 
+    // getters and setters to increase readability and get stuff to show on the window
     public boolean isGrowing() { return pool.growth; }
 
     public int getIterationDelay() { return pool.iterationDelay; }

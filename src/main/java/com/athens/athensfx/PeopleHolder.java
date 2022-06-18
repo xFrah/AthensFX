@@ -20,7 +20,7 @@ public class PeopleHolder <S extends Person> {
             started = true;
             new PeopleUpdater().start();
         } else {
-            System.out.println("fuck off");
+            System.out.println("Thread already started...");
         }
     }
 
@@ -74,7 +74,7 @@ public class PeopleHolder <S extends Person> {
         PeopleUpdater () {
             super("PeopleUpdater");
             tlr = ThreadLocalRandom.current();
-        } // is this efficient or not?
+        } // todo is this efficient or not?
 
         public void run() {
             try {
