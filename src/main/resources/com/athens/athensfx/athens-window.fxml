@@ -21,7 +21,6 @@
 <?import javafx.scene.shape.Sphere?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.ToggleSwitch?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="744.0" prefWidth="1153.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.athens.athensfx.WindowController">
     <HBox alignment="CENTER" prefHeight="61.0" prefWidth="790.0">
@@ -122,8 +121,8 @@
     </Text>
     <Line endX="479.5" layoutX="105.0" layoutY="515.0" startX="-104.0" />
     <Line endX="-100.0" endY="-487.5" layoutX="684.0" layoutY="549.0" startX="-100.0" startY="195.0" />
-    <Slider fx:id="iterationDelaySlider" blockIncrement="1.0" disable="true" layoutX="747.0" layoutY="643.0" majorTickUnit="100.0" max="1000.0" minorTickCount="10" onMouseReleased="#setPopulationIterationDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-    <Text layoutX="590.0" layoutY="658.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ITERATION DELAY (ms)">
+    <Slider fx:id="iterationDelaySlider" blockIncrement="1.0" disable="true" layoutX="742.0" layoutY="602.0" majorTickUnit="100.0" max="1000.0" minorTickCount="10" onMouseReleased="#setPopulationIterationDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+    <Text layoutX="585.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ITERATION DELAY (ms)">
         <font>
             <Font size="14.0" />
         </font>
@@ -191,13 +190,8 @@
      </yAxis>
    </LineChart>
    <PieChart fx:id="pieChart" layoutX="668.0" layoutY="140.0" prefHeight="278.0" prefWidth="391.0" />
-   <Slider fx:id="refreshDelaySlider" blockIncrement="1.0" layoutX="747.0" layoutY="692.0" majorTickUnit="50.0" max="500.0" min="50.0" minorTickCount="10" onMouseReleased="#setRefreshDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
-   <Text layoutX="603.0" layoutY="707.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REFRESH DELAY (ms)">
-      <font>
-         <Font size="14.0" />
-      </font>
-   </Text>
-   <Text layoutX="673.0" layoutY="611.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GROWTH" wrappingWidth="64.7969970703125">
+   <Slider fx:id="refreshDelaySlider" blockIncrement="1.0" layoutX="742.0" layoutY="651.0" majorTickUnit="50.0" max="500.0" min="50.0" minorTickCount="10" onMouseReleased="#setRefreshDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+   <Text layoutX="598.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REFRESH DELAY (ms)">
       <font>
          <Font size="14.0" />
       </font>
@@ -249,19 +243,24 @@
          <Font size="15.0" />
       </font>
    </TitledPane>
-   <ToggleSwitch fx:id="growthSwitch" disable="true" layoutX="747.0" layoutY="597.0" onMouseReleased="#setPopulationGrowth" prefHeight="18.0" prefWidth="27.0" selected="true" />
-   <Slider fx:id="aSlider" blockIncrement="1.0" disable="true" layoutX="837.0" layoutY="519.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
-   <Slider fx:id="bSlider" blockIncrement="1.0" disable="true" layoutX="837.0" layoutY="555.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
-   <Slider fx:id="cSlider" blockIncrement="1.0" disable="true" layoutX="837.0" layoutY="593.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
-   <Text layoutX="812.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" />
-   <Text layoutX="813.0" layoutY="569.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" />
-   <Text layoutX="813.0" layoutY="607.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" />
+   <Slider fx:id="aSlider" blockIncrement="1.0" disable="true" layoutX="834.0" layoutY="490.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
+   <Slider fx:id="bSlider" blockIncrement="1.0" disable="true" layoutX="834.0" layoutY="526.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
+   <Slider fx:id="cSlider" blockIncrement="1.0" disable="true" layoutX="834.0" layoutY="564.0" majorTickUnit="2.0" max="20.0" minorTickCount="1" onMouseReleased="#setParameters" prefHeight="37.0" prefWidth="284.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
+   <Text layoutX="809.0" layoutY="506.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" />
+   <Text layoutX="810.0" layoutY="540.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" />
+   <Text layoutX="810.0" layoutY="578.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" />
    <Sphere fx:id="earth" layoutX="693.0" layoutY="508.0" radius="70.0" />
    <AmbientLight fx:id="light" layoutX="603.0" layoutY="680.0" lightOn="true">
       <color>
          <Color red="1.0" green="1.0" blue="1.0" opacity="0.4429657757282257" />
       </color>
    </AmbientLight>
-   <Button fx:id="pause" disable="true" layoutX="951.0" layoutY="459.0" mnemonicParsing="false" onAction="#onPauseToggle" prefHeight="25.0" prefWidth="65.0" text="PAUSE" />
-   <Button fx:id="kill" disable="true" layoutX="1064.0" layoutY="460.0" mnemonicParsing="false" onAction="#onKill" prefHeight="25.0" prefWidth="65.0" text="KILL" textFill="RED" />
+   <Button fx:id="pause" disable="true" layoutX="864.0" layoutY="451.0" mnemonicParsing="false" onAction="#onPauseToggle" prefHeight="25.0" prefWidth="65.0" text="PAUSE" />
+   <Button fx:id="kill" disable="true" layoutX="994.0" layoutY="451.0" mnemonicParsing="false" onAction="#onKill" prefHeight="25.0" prefWidth="65.0" text="KILL" textFill="RED" />
+   <Slider fx:id="refreshDelaySlider1" blockIncrement="1.0" layoutX="742.0" layoutY="695.0" majorTickUnit="50.0" minorTickCount="10" onMouseReleased="#setRefreshDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+   <Text layoutX="613.0" layoutY="709.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copulating men, %">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Text>
 </Pane>
