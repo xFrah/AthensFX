@@ -12,6 +12,7 @@ public class Population {
     int var2;
     int var3;
 
+
     volatile transient int max = 0;
     volatile transient int min = 0;
     final int id;
@@ -19,6 +20,8 @@ public class Population {
     transient boolean manConvenience = false;
     transient boolean womanConvenience = false;
     volatile transient float lastIterationTimeCompletion;
+
+    volatile double copulatingRatio = 0.30;
 
     final Stopper stopper = new Stopper(this);
     private final PopulationUpdaterLock pool = new PopulationUpdaterLock();
@@ -74,6 +77,10 @@ public class Population {
                  womenHolder.dead.size() + menHolder.dead.size(), lastIterationTimeCompletion};
     }
 
+    public void setCopulatingRatio(double copulatingRatio) {
+        this.copulatingRatio = copulatingRatio;
+    }
+
     class PopulationUpdaterLock extends Thread {
         // todo what does this class do
         volatile int iterationDelay = 0;
@@ -103,7 +110,7 @@ public class Population {
             int sizeMan = menHolder.alive.size();
             int sizeWoman = womenHolder.alive.size();
             int lower = Math.min(sizeWoman, sizeMan);
-            int span = lower/4;
+            int span = (int) ((lower/2) * copulatingRatio);
             max = tlr.nextInt(span, lower/2);
             min = max - span;
         }

@@ -159,8 +159,8 @@ public class WindowController {
 
     @FXML
     void setCopulatingRatio(){
-        int copulatingRatio = (int) copulatingSlider.getValue();
-        System.out.println(copulatingRatio);
+        double copulatingRatio = (double) (copulatingSlider.getValue()/100);
+        selectedPopulation.setCopulatingRatio(copulatingRatio);
     }
 
     @FXML
@@ -253,6 +253,7 @@ public class WindowController {
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
         cSlider.setValue(selectedPopulation.c);
+        copulatingSlider.setValue(selectedPopulation.copulatingRatio*100);
         float[] info = selectedPopulation.getInfo();
         float menRatio = info[4] / (info[3] + info[4]);
         float womenRatio = info[6] / (info[6] + info[5]);
