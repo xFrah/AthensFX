@@ -281,6 +281,8 @@ public class WindowController {
         cSlider.setDisable(false);
         pause.setDisable(false);
         iterationDelaySlider.setDisable(false);
+        refreshDelaySlider.setDisable(false);
+        copulatingSlider.setDisable(false);
     }
 
 
