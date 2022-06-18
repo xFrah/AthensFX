@@ -6,7 +6,6 @@ public class Woman extends Person {
     private static final BiConsumer<Woman, Integer> single = Person::tooOld;
     private static final BiConsumer<Woman, Integer> old = Person::deathChance;
     private static final BiConsumer<Woman, Integer> dead = (woman, i) -> {};
-    private static final BiConsumer<Woman, Integer> pregnant = Woman::giveBirth;
     private static final BiConsumer<Woman, Integer> young = Person::tooYoung;
     private BiConsumer<Woman, Integer> statusFunc = young;
 
@@ -20,6 +19,7 @@ public class Woman extends Person {
         statusFunc.accept(this, i);
     }
 
+
     void giveBirth(int i) {
         // This method creates a new human being. It is called by
         setSingle();
@@ -31,8 +31,6 @@ public class Woman extends Person {
     }
 
     public boolean isSingle() { return statusFunc == single; }
-
-    public void setPregnant() { statusFunc = pregnant; }
 
     public void setSingle() { statusFunc = single; }
 
