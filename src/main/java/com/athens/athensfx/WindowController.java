@@ -73,6 +73,8 @@ public class WindowController {
     @FXML
     Slider cSlider;
     @FXML
+    Slider copulatingSlider;
+    @FXML
     Sphere earth;
     ValueAxis<Number> xAxis;
     PieChart.Data p1 = new PieChart.Data("Faithful", 1);
@@ -153,6 +155,12 @@ public class WindowController {
         // (how much time is added after the computation is completed).
         // It can be used to slow down the program for a more in-depth look at how each iteration changes the data.
         selectedPopulation.setIterationDelay((int) iterationDelaySlider.getValue());
+    }
+
+    @FXML
+    void setCopulatingRatio(){
+        int copulatingRatio = (int) copulatingSlider.getValue();
+        System.out.println(copulatingRatio);
     }
 
     @FXML

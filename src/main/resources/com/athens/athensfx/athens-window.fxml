@@ -257,7 +257,7 @@
    </AmbientLight>
    <Button fx:id="pause" disable="true" layoutX="864.0" layoutY="451.0" mnemonicParsing="false" onAction="#onPauseToggle" prefHeight="25.0" prefWidth="65.0" text="PAUSE" />
    <Button fx:id="kill" disable="true" layoutX="994.0" layoutY="451.0" mnemonicParsing="false" onAction="#onKill" prefHeight="25.0" prefWidth="65.0" text="KILL" textFill="RED" />
-   <Slider fx:id="refreshDelaySlider1" blockIncrement="1.0" layoutX="742.0" layoutY="695.0" majorTickUnit="50.0" minorTickCount="10" onMouseReleased="#setRefreshDelay" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+   <Slider fx:id="copulatingSlider" blockIncrement="1.0" layoutX="742.0" layoutY="695.0" majorTickUnit="50.0" minorTickCount="10" onMouseReleased="#setCopulatingRatio" prefHeight="37.0" prefWidth="378.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
    <Text layoutX="613.0" layoutY="709.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copulating men, %">
       <font>
          <Font size="14.0" />
