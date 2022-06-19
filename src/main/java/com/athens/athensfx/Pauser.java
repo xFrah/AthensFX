@@ -3,7 +3,7 @@ package com.athens.athensfx;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-class Stopper {
+class Pauser {
     // This class pauses the population execution when the percentages aren't changing much
     // for a prolonged period of time.
     final Population p;
@@ -12,7 +12,7 @@ class Stopper {
     float threshold = 0.008f;
     boolean done = false;
 
-    Stopper(Population p) {
+    Pauser(Population p) {
         this.p = p;
         // we initialize the array with random values so as not to mess up the computation in the first iterations
         // (that aren't going to give a result anyway)

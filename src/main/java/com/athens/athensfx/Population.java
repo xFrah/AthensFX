@@ -23,7 +23,7 @@ public class Population {
 
     volatile double copulatingRatio = 0.30;
 
-    final Stopper stopper = new Stopper(this);
+    final Pauser pauser = new Pauser(this);
     private final PopulationUpdaterLock pool = new PopulationUpdaterLock();
     final PeopleHolder<Man> menHolder = new PeopleHolder<>(pool);
     final PeopleHolder<Woman> womenHolder = new PeopleHolder<>(pool);

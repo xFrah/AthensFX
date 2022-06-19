@@ -47,6 +47,8 @@ public class WindowController {
     @FXML
     TextField c;
     @FXML
+    TextField startingPopulationInput;
+    @FXML
     Button createNew;
     @FXML
     ProgressBar menProgressBar;
@@ -89,7 +91,7 @@ public class WindowController {
         // It calls the createPopulation method in Genesis with all the parameters entered by the user.
         // This method also sets the a,b,c labels, refreshed the window reflecting the changes
         // and closes the population creation menu.
-        Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()), menRatioSlider.getValue(), womenRatioSlider.getValue());
+        Genesis.createPopulation(Integer.parseInt(a.getText()), Integer.parseInt(b.getText()), Integer.parseInt(c.getText()), menRatioSlider.getValue(), womenRatioSlider.getValue(),Integer.parseInt(startingPopulationInput.getText()));
         aLabel.setText(a.getText());
         bLabel.setText(b.getText());
         cLabel.setText(c.getText());
@@ -205,7 +207,7 @@ public class WindowController {
         consoleReload(values, menRatio, womenRatio);
         angle += 0.5;
         earth.setRotate(angle);
-        if (selectedPopulation.stopper.update(menRatio, womenRatio)) onPauseToggle();
+        if (selectedPopulation.pauser.update(menRatio, womenRatio)) onPauseToggle();
         menProgressBar.setProgress(menRatio);
         menPercentage.setText(Math.round(menRatio * 8) + "/8");
         womenProgressBar.setProgress(womenRatio);

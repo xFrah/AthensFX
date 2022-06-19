@@ -50,10 +50,10 @@ public class Genesis extends Application { // TODO stop all threads if window is
         launch();
     }
 
-    public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman) {
+    public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation) {
         // This method creates a new population, and it's called by the onCreateNew method in WindowController
         // The onCreateNew method passes all the parameters that the user put in during the configuration.
-        Population p = new Population(a, b, c, ratioMan, ratioWoman, 100000, populations.size());
+        Population p = new Population(a, b, c, ratioMan, ratioWoman, startingPopulation, populations.size());
         populations.add(p);
         selectedPopulationIndex = populations.size() - 1;
         selectedPopulation = p;

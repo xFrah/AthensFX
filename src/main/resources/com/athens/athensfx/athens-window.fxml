@@ -196,7 +196,7 @@
          <Font size="14.0" />
       </font>
    </Text>
-   <TitledPane fx:id="dropDown" expanded="false" layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
+   <TitledPane fx:id="dropDown" layoutX="812.0" layoutY="16.0" prefHeight="278.0" prefWidth="310.0" text="Create New" textAlignment="CENTER" textFill="RED">
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <children>
@@ -235,7 +235,7 @@
                      <Font size="18.0" />
                   </font>
                </Text>
-               <TextField fx:id="b1" layoutX="130.0" layoutY="60.0" prefHeight="28.0" prefWidth="161.0" text="1000" />
+               <TextField fx:id="startingPopulationInput" layoutX="130.0" layoutY="60.0" prefHeight="28.0" prefWidth="161.0" text="1000" />
             </children>
          </AnchorPane>
      </content>
