@@ -106,7 +106,7 @@ public class Population {
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
         }
 
-        private void randomOffset() {
+        private void randomInterval() {
             int sizeMan = menHolder.alive.size();
             int sizeWoman = womenHolder.alive.size();
             int lower = Math.min(sizeWoman, sizeMan);
@@ -117,7 +117,7 @@ public class Population {
 
         public void run() {
             updateParameters();
-            randomOffset();
+            randomInterval();
             menHolder.startThreads();
             womenHolder.startThreads();
             long start = System.currentTimeMillis();
@@ -129,7 +129,7 @@ public class Population {
                         // System.out.println("(" + min + ", " + max + ") = " + (max - min));
                         finished = 0;
                         iterations++;
-                        randomOffset();
+                        randomInterval();
                         // if the population is paused, make the thread wait until it's resumed.
                         if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
                         TimeUnit.MILLISECONDS.sleep(iterationDelay); // sleep for "delay" milliseconds
