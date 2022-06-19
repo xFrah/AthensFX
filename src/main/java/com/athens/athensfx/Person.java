@@ -25,7 +25,7 @@ public abstract class Person {
     abstract void setOld();
     abstract void setDead();
 
-    boolean deathChance(int i) {
+    boolean deathChance(int i) {  // todo rename this to #hasToDie()
         // This method basically makes the person die if it's their time... Life is tough.
         if (age++ >= deathAge) {
             setDead();
@@ -35,6 +35,8 @@ public abstract class Person {
         }
         return false;
     }
+
+    void nothing(int i) {}
 
     void tooOld(int i) {
         // This method makes the person "inactive" if their age is too old to have a child.
