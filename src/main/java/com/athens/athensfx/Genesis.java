@@ -44,6 +44,9 @@ public class Genesis extends Application { // TODO stop all threads if window is
         controller.earth.setMaterial(earthMaterial);
         controller.earth.setRotationAxis(Rotate.Y_AXIS);
         controller.xAxis = (ValueAxis<Number>) controller.ratioChart.getXAxis();
+        controller.xAxis2 = (ValueAxis<Number>) controller.memoryChart.getXAxis();
+        controller.memoryChart.getData().add(controller.memorySeries);
+        controller.memorySeries.setName("Memory Used");
     }
 
     public static void main(String[] args) {
@@ -80,6 +83,7 @@ public class Genesis extends Application { // TODO stop all threads if window is
                 throw new RuntimeException(e);
             }
         }
+
 
     }
 

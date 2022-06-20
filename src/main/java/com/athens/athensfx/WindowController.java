@@ -2,9 +2,7 @@ package com.athens.athensfx;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.PieChart;
-import javafx.scene.chart.ValueAxis;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
@@ -57,6 +55,8 @@ public class WindowController {
     @FXML
     LineChart<Number, Number> ratioChart;
     @FXML
+    AreaChart<Number, Number> memoryChart;
+    @FXML
     Slider iterationDelaySlider;
     @FXML
     Slider refreshDelaySlider;
@@ -79,11 +79,14 @@ public class WindowController {
     @FXML
     Sphere earth;
     ValueAxis<Number> xAxis;
+    ValueAxis<Number> xAxis2;
+    XYChart.Series<Number,Number> memorySeries = new XYChart.Series<>();
     PieChart.Data p1 = new PieChart.Data("Faithful", 1);
     PieChart.Data p2 = new PieChart.Data("Philanderer", 1);
     PieChart.Data p3 = new PieChart.Data("CoyWoman", 1);
     PieChart.Data p4 = new PieChart.Data("FastWoman", 1);
     private double angle = 0.0;
+    private final Runtime runtime = Runtime.getRuntime();
 
     @FXML
     protected void onCreateNew() {
@@ -199,6 +202,12 @@ public class WindowController {
             xAxis.setLowerBound(size - 100);
             xAxis.setUpperBound(size);
         }
+        int memSize = memorySeries.getData().size();
+        if (memSize > 100) { // TODO this needs an optimization
+            xAxis2.setLowerBound(memSize - 100);
+            xAxis2.setUpperBound(memSize);
+        }
+        memoryUpdate();
         if (selectedPopulation.isPaused()) return;
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
@@ -230,6 +239,11 @@ public class WindowController {
         selectedPopulation.womenHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.womenHolder.series.getData().size(), womenRatio));
     }
 
+    void memoryUpdate() {
+        // This method updates the chart series with the new ratios from the last iteration.
+        memorySeries.getData().add(new AreaChart.Data<>(memorySeries.getData().size(), ((float) runtime.totalMemory()/(float) runtime.maxMemory())*100));
+    }
+
     void lineChartReload() {
         // This method updates the line chart
         ratioChart.getData().clear();
@@ -250,7 +264,7 @@ public class WindowController {
         console.clear();
         pause.setText((selectedPopulation.isPaused()) ? "RESUME" : "PAUSE");
         lineChartReload();
-        selectedPopulationID.setText(String.valueOf(selectedPopulationIndex+1) + "/" + String.valueOf(Genesis.populations.size()));
+        selectedPopulationID.setText(selectedPopulationIndex + 1 + "/" + Genesis.populations.size());
         iterationDelaySlider.setValue(selectedPopulation.getIterationDelay());
         aSlider.setValue(selectedPopulation.a);
         bSlider.setValue(selectedPopulation.b);
