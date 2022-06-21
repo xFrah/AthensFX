@@ -18,14 +18,21 @@ import java.util.function.Consumer;
 
 public class Genesis extends Application {
 
-    static ArrayList<Population> populations = new ArrayList<>(); // This is where all the populations are stored.
-    public static int selectedPopulationIndex;  // Index of the currently selected population (the one showed on the screen)
-    public static Population selectedPopulation = null; // Selected population object
-    private static WindowController controller; // window controller
+    /** This is where all the populations are stored. */
+    static ArrayList<Population> populations = new ArrayList<>();
 
+    /** Index of the currently selected population (the one showed on the screen). */
+    public static int selectedPopulationIndex;
+
+    /** Selected population object. */
+    public static Population selectedPopulation = null;
+
+    /** window controller. */
+    private static WindowController controller;
+
+    /** This method sets up the window. */
     @Override
     public void start(Stage stage) throws IOException, URISyntaxException {
-        // This method sets up the window
         FXMLLoader fxmlLoader = new FXMLLoader(Genesis.class.getResource("athens-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("AthensFX v1.1");

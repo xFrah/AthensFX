@@ -14,9 +14,9 @@ public class Woman extends Person {
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
 
+    /** This method runs the currentStatus function,
+    * i.e the BiConsumer that is currently set on statusFunc. */
     void update(int i) {
-        // This method runs the currentStatus' function,
-        // i.e the BiConsumer that is currently set on statusFunc
         statusFunc.accept(this, i);
     }
 

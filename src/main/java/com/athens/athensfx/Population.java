@@ -81,10 +81,10 @@ public class Population {
         this.copulatingRatio = copulatingRatio;
     }
 
+    /** This class synchronizes the two PeopleUpdater threads, ensuring that both are finished before
+    * the next iteration is performed.
+    * It does so by using the finished counter. */
     class PopulationUpdaterLock extends Thread {
-        // This class synchronizes the two PeopleUpdater threads, ensuring that both are finished before
-        // the next iteration is performed.
-        // It does so by using the finished counter.
         volatile int iterationDelay = 0;
         volatile boolean paused = false;
         volatile boolean running = true;
