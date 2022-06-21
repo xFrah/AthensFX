@@ -82,11 +82,13 @@ public class Population {
     }
 
     class PopulationUpdaterLock extends Thread {
-        // todo what does this class do
+        // This class synchronizes the two PeopleUpdater threads, ensuring that both are finished before
+        // the next iteration is performed.
+        // It does so by using the finished counter.
         volatile int iterationDelay = 0;
         volatile boolean paused = false;
         volatile boolean running = true;
-        volatile transient int finished = 0; // todo write the different values of finished and what they are for
+        volatile transient int finished = 0;
         private final ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
         PopulationUpdaterLock () {
@@ -134,7 +136,7 @@ public class Population {
                         if (paused) {synchronized (pauseLock) { pauseLock.wait();} }
                         TimeUnit.MILLISECONDS.sleep(iterationDelay); // sleep for "delay" milliseconds
                         synchronized (this) {
-                            // todo explain what this does
+                            // notify all threads so that they can resume
                             start = System.currentTimeMillis();
                             notifyAll();
                         }

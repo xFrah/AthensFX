@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 
 public class Man extends Person {
     private static final BiConsumer<Man, Integer> single = Man::single;
-    private static final BiConsumer<Man, Integer> old = Person::deathChance;
+    private static final BiConsumer<Man, Integer> old = Person::hasToDie;
     private static final BiConsumer<Man, Integer> dead = Person::nothing;
     private static final BiConsumer<Man, Integer> young = Person::tooYoung;
     private BiConsumer<Man, Integer> statusFunc = young;

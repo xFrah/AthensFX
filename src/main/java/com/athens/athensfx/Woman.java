@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 
 public class Woman extends Person {
     private static final BiConsumer<Woman, Integer> single = Person::tooOld;
-    private static final BiConsumer<Woman, Integer> old = Person::deathChance;
+    private static final BiConsumer<Woman, Integer> old = Person::hasToDie;
     private static final BiConsumer<Woman, Integer> dead = Person::nothing;
     private static final BiConsumer<Woman, Integer> young = Person::tooYoung;
     private BiConsumer<Woman, Integer> statusFunc = young;
@@ -15,7 +15,8 @@ public class Woman extends Person {
     }
 
     void update(int i) {
-        // todo comment this and explain what biConsumer is... actually explain the whole thing
+        // This method runs the currentStatus' function,
+        // i.e the BiConsumer that is currently set on statusFunc
         statusFunc.accept(this, i);
     }
 
