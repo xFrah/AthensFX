@@ -95,8 +95,7 @@ public class Population {
 
 
         private void updateBirthValues () {
-            // This method is called by the run method of this class,
-            // and it computes how the men and women should become when they are born.
+            // This computes how the men and women should become when they are born.
             // The percentages of the people from one sex influence the ones from the other sex, so they will reach an
             // equilibrium only if a,b, and c are suited to keep the population going.
             // (the three variables are actually what impacts the person's gain the most)
