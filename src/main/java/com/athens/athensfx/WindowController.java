@@ -241,7 +241,7 @@ public class WindowController {
 
     void memoryUpdate() {
         // This method updates the chart series with the new ratios from the last iteration.
-        memorySeries.getData().add(new AreaChart.Data<>(memorySeries.getData().size(), ((float) runtime.totalMemory()/(float) runtime.maxMemory())*100));
+        memorySeries.getData().add(new AreaChart.Data<>(memorySeries.getData().size(), ((float) (runtime.totalMemory() - runtime.freeMemory())/(float) runtime.maxMemory())*100));
     }
 
     void lineChartReload() {
