@@ -194,7 +194,7 @@ public class WindowController {
     }
 
     void setInfo(float[] values) {
-        // todo write comment for this
+        //This method set's the population's data on the window
         int size = selectedPopulation.womenHolder.series.getData().size();
         if (size > 100) { // TODO this needs an optimization
             xAxis.setLowerBound(size - 100);

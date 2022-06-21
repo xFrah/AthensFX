@@ -15,7 +15,8 @@ public class Woman extends Person {
     }
 
     void update(int i) {
-        // todo comment this and explain what biConsumer is... actually explain the whole thing
+        // This method runs the currentStatus' function,
+        // i.e the BiConsumer that is currently set on statusFunc
         statusFunc.accept(this, i);
     }
 
