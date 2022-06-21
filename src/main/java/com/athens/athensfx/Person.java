@@ -15,7 +15,7 @@ public abstract class Person {
         // In the constructor we also set the age of death right away.
         this.p = pop;
         this.group = group;
-        this.deathAge = GrimReaper.deathAge();
+        this.deathAge = GrimReaper.getDeathAge();
         increment();
     }
 
