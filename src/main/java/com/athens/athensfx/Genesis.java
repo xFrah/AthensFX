@@ -2,6 +2,7 @@ package com.athens.athensfx;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.ValueAxis;
@@ -9,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -38,6 +40,10 @@ public class Genesis extends Application {
         stage.setTitle("AthensFX v1.1");
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
+        });
         controller = fxmlLoader.getController();
         windowSetup();
     }
