@@ -196,12 +196,12 @@ public class WindowController {
     void setInfo(float[] values) {
         //This method set's the population's data on the window
         int size = selectedPopulation.womenHolder.series.getData().size();
-        if (size > 100) { // TODO this needs an optimization
+        if (size > 100) {
             xAxis.setLowerBound(size - 100);
             xAxis.setUpperBound(size);
         }
         int memSize = memorySeries.getData().size();
-        if (memSize > 100) { // TODO this needs an optimization
+        if (memSize > 100) {
             xAxis2.setLowerBound(memSize - 100);
             xAxis2.setUpperBound(memSize);
         }
@@ -227,7 +227,7 @@ public class WindowController {
                 "\n- Population: " + (int) (((values[1] + values[2]) - values[7])) +
                 "\n- F: " + (int) values[4] + ", P: " + (int) values[3] + ", C: " + (int) values[6] + ", S: " + (int) values[5] +
                 "\n- Ratio: " + menRatio + ", " + womenRatio +
-                "\n- Speed: " + (int) (((values[1] + values[2]) / values[8]) * 1000) + " p/s" + // todo mathematical proof of this thing, maybe V = people/1ms, so by multiplying by 1000, we find people/1000ms
+                "\n- Speed: " + (int) (((values[1] + values[2]) / values[8]) * 1000) + " p/s" +
                 "\n- Execution Time: " + (int) values[8] + " ms");
     }
 

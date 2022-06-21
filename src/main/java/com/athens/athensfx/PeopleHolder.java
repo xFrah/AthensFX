@@ -33,10 +33,6 @@ public class PeopleHolder <S extends Person> {
         }
     }
 
-    // todo could as well use a simple LinkedList, check if its empty in the synchronized block and then do the deed
-    // todo this way we don't synchronize twice and we don't create an Integer object(fuck me we are not creating an integer).
-    // todo we are only taking the reference from the list. but what if it's null? is it a new object?
-
     public boolean randomSex () {
         return tlr.nextBoolean();
     }
