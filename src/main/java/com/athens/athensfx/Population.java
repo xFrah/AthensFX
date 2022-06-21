@@ -34,9 +34,9 @@ public class Population {
     final Object pauseLock = new Object();
 
 
+    /** This is the population constructor. It is called by createPopulation in Genesis and takes in all the parameters
+    * the user set up during the creation of the population. */
     public Population(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation, int id) {
-        // This is the population constructor. It is called by createPopulation in Genesis and takes in all the parameters
-        // the user set up during the creation of the population.
         this.a = a;
         this.b = b;
         this.c = c;
@@ -45,9 +45,9 @@ public class Population {
         pool.start();
     }
 
+    /** This method is called by the constructor, and it crates the first people according to the settings the user
+    * chose for the simulation. */
     private void setupPopulation(int startingPopulation, double ratioMan, double ratioWoman) {
-        // This method is called by the constructor, and it crates the first people according to the settings the user
-        // chose for the simulation.
         menHolder.series.setName("Men ratio");
         womenHolder.series.setName("Women ratio");
         for (int i = 0; i < ((float) startingPopulation/2)*ratioMan; i++) {menHolder.alive.add(new Man(false, this));}
@@ -60,17 +60,17 @@ public class Population {
         pool.running = false;
     }
 
+    /** This method updates the three variables that are actually used to compute Men and Women convenience.
+    * We just compute and store these directly for readability and ease of maintenance. */
     void updateParameters() {
-        // This method updates the three variables that are actually used to compute Men and Women convenience.
-        // We just compute and store these directly for readability and ease of maintenance.
         var1 = a - (b/2) - c;
         var2 = a - (b/2);
         var3 = a - b;
     }
 
+    /** This method gives all the info about the population. It is called by populationReload in WindowController
+    * and is used to update the values that are shown on the charts. */
     public float[] getInfo() {
-        // This method gives all the info about the population. It is called by populationReload in WindowController
-        // and is used to update the values that are shown on the charts.
         return new float[]
                 {iterations, menHolder.alive.size(), womenHolder.alive.size(),
                  philanderers.get(), faithfulMen.get(), fastWomen.get(), coyWomen.get(),
@@ -94,13 +94,13 @@ public class Population {
         }
 
 
+        /** This computes how the men and women should become when they are born.
+        * The percentages of the people from one sex influence the ones from the other sex, so they will reach an
+        * equilibrium only if a,b, and c are suited to keep the population going.
+        * (the three variables are actually what impacts the person's gain the most)
+        * This method also decides whether a new person can be born or not,
+        * according to the growth toggle switch setting. */
         private void updateBirthValues () {
-            // This computes how the men and women should become when they are born.
-            // The percentages of the people from one sex influence the ones from the other sex, so they will reach an
-            // equilibrium only if a,b, and c are suited to keep the population going.
-            // (the three variables are actually what impacts the person's gain the most)
-            // This method also decides whether a new person can be born or not,
-            // according to the growth toggle switch setting.
             womanConvenience = var1 * faithfulMen.get() < var2 * faithfulMen.get() + var3 * philanderers.get();
             manConvenience = var1 * coyWomen.get() + var2 * fastWomen.get() < a * fastWomen.get();
         }

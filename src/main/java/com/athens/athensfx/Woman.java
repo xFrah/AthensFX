@@ -9,8 +9,8 @@ public class Woman extends Person {
     private static final BiConsumer<Woman, Integer> young = Person::tooYoung;
     private BiConsumer<Woman, Integer> statusFunc = young;
 
+    /** This is the constructor for woman. */
     Woman(boolean horny, Population pop) {
-        // This is the constructor for woman.
         super(pop, (horny) ? pop.fastWomen: pop.coyWomen);
     }
 
@@ -19,10 +19,8 @@ public class Woman extends Person {
         statusFunc.accept(this, i);
     }
 
-
+    /** This method creates a new human being. It is called by setSingle(). */
     void giveBirth(int i) {
-        // This method creates a new human being. It is called by
-        setSingle();
         if (p.womenHolder.randomSex()) { // menHolder?
             p.menHolder.newSoul(new Man(p.manConvenience, p));
         } else {

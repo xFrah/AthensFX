@@ -34,9 +34,10 @@ public class Genesis extends Application {
         controller = fxmlLoader.getController();
         windowSetup();
     }
+
+    /** This method does further window setup
+    * for example, starts the window updater thread. */
     public static void windowSetup() throws URISyntaxException {
-        // This method does further window setup
-        // for example, starts the window updater thread
         controller.bakeThePie();
         new WindowUpdater().start();
         PhongMaterial earthMaterial = new PhongMaterial();
@@ -53,9 +54,9 @@ public class Genesis extends Application {
         launch();
     }
 
+    /** This method creates a new population, and it's called by the onCreateNew method in WindowController
+    * The onCreateNew method passes all the parameters that the user put in during the configuration. */
     public static void createPopulation(int a, int b, int c, double ratioMan, double ratioWoman, int startingPopulation) {
-        // This method creates a new population, and it's called by the onCreateNew method in WindowController
-        // The onCreateNew method passes all the parameters that the user put in during the configuration.
         Population p = new Population(a, b, c, ratioMan, ratioWoman, startingPopulation, populations.size());
         populations.add(p);
         selectedPopulationIndex = populations.size() - 1;
@@ -63,9 +64,8 @@ public class Genesis extends Application {
     }
 
 
-
+    /** This is the window updater thread that refreshes the window showing updated info on the population. */
     static class WindowUpdater extends Thread {
-        // This is the window updater thread that refreshes the window showing updated info on the population
         public static int refreshDelay = 100;
 
         public WindowUpdater() { super("WindowUpdater"); }

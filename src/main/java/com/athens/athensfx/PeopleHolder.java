@@ -37,35 +37,6 @@ public class PeopleHolder <S extends Person> {
     // todo this way we don't synchronize twice and we don't create an Integer object(fuck me we are not creating an integer).
     // todo we are only taking the reference from the list. but what if it's null? is it a new object?
 
-  //void newSoul (S soul) {
-  //    Integer passedSoul = dead.poll();
-  //    if (passedSoul == null) {
-  //        alive.add(soul);
-  //    } else {
-  //        alive.set(passedSoul, soul);
-  //    }
-  //}
-
-  //synchronized void newSoul (S soul) {
-  //    if (dead.isEmpty()) {
-  //        alive.add(soul);
-  //    } else {
-  //        alive.set(dead.poll(), soul);
-  //    }
-  //}
-
-  //void newSoul (S soul) {
-  //    if (dead.isEmpty()) {
-  //        alive.add(soul);
-  //    } else {
-  //        try {
-  //            alive.set(dead.take(), soul);
-  //        } catch (InterruptedException e) {
-  //            throw new RuntimeException(e);
-  //        }
-  //    }
-  //}
-
     public boolean randomSex () {
         return tlr.nextBoolean();
     }
