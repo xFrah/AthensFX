@@ -14,8 +14,6 @@ public class GrimReaper {
         // This method picks a random age from the array
         // and adds a random number from 0 to 5 to get all the possible years.
         // (ISTAT data was organized in 5-year blocks).
-        // todo does it affect performance here? this class is pretty heavy
-        // todo maybe we should hard-code the length too (?)
         return GrimReaper.deathArray[seedOfDeath.nextInt(GrimReaper.deathArray.length)] + seedOfDeath.nextInt(5);
     }
 

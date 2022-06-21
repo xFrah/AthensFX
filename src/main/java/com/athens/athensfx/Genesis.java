@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class Genesis extends Application { // TODO stop all threads if window is closed
+public class Genesis extends Application {
 
     static ArrayList<Population> populations = new ArrayList<>(); // This is where all the populations are stored.
     public static int selectedPopulationIndex;  // Index of the currently selected population (the one showed on the screen)
