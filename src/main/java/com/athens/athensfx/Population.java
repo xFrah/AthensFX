@@ -58,6 +58,8 @@ public class Population {
 
     public void stop() {
         pool.running = false;
+        menHolder.alive.clear();
+        womenHolder.alive.clear();
     }
 
     /** This method updates the three variables that are actually used to compute Men and Women convenience.
