@@ -18,6 +18,8 @@ public class WindowController {
     @FXML
     TextArea console;
     @FXML
+    TextArea memoryConsole;
+    @FXML
     Text aLabel;
     @FXML
     Text bLabel;
@@ -205,7 +207,10 @@ public class WindowController {
             xAxis2.setLowerBound(memSize - 100);
             xAxis2.setUpperBound(memSize);
         }
-        memoryUpdate();
+        float used = runtime.totalMemory() - runtime.freeMemory();
+        int percentage = (int) ((used/(float) runtime.maxMemory())*100);
+        memoryUpdate(percentage);
+        memoryConsoleReload(used, percentage);
         if (selectedPopulation.isPaused()) return;
         float menRatio = values[4] / (values[3] + values[4]);
         float womenRatio = values[6] / (values[6] + values[5]);
@@ -231,15 +236,25 @@ public class WindowController {
                 "\n- Execution Time: " + (int) values[8] + " ms");
     }
 
+    void memoryConsoleReload(float used, int percentage) {
+        memoryConsole.setText("---------- Memory Log ----------" +
+                "\n- Memory Usage: " + (int) (used/(1024*1024)) + " MB / " + (runtime.maxMemory() / (1024*1024)) + " MB" +
+                "\n- Percentage: " + percentage + " %");
+    }
+
     /** This method updates the chart series with the new ratios from the last iteration. */
     private void seriesUpdate(float menRatio, float womenRatio) {
         selectedPopulation.menHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.menHolder.series.getData().size(), menRatio));
         selectedPopulation.womenHolder.series.getData().add(new LineChart.Data<>(selectedPopulation.womenHolder.series.getData().size(), womenRatio));
     }
 
-    /** This method updates the chart series with the new ratios from the last iteration. */
-    void memoryUpdate() {
-        memorySeries.getData().add(new AreaChart.Data<>(memorySeries.getData().size(), ((float) (runtime.totalMemory() - runtime.freeMemory())/(float) runtime.maxMemory())*100));
+    /**
+     * This method updates the chart series with the new ratios from the last iteration.
+     *
+     * @return
+     */
+    void memoryUpdate(int percentage) {
+        memorySeries.getData().add(new AreaChart.Data<>(memorySeries.getData().size(), percentage));
     }
 
     /** This method updates the line chart */

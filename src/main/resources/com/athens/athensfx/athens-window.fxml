@@ -274,4 +274,9 @@
    </Text>
    <Line endX="468.0" layoutX="1254.0" layoutY="515.0" startX="-100.0" />
    <Line endX="-100.0" endY="-487.5" layoutX="1253.0" layoutY="549.0" startX="-100.0" startY="195.0" />
+   <TextArea fx:id="memoryConsole" editable="false" layoutX="1153.0" layoutY="516.0" prefHeight="229.0" prefWidth="569.0" style="-fx: grey;" wrapText="true">
+      <font>
+         <Font size="22.0" />
+      </font>
+   </TextArea>
 </Pane>
