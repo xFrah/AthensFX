@@ -13,13 +13,13 @@ public class Population {
     int var3;
 
 
-    volatile transient int max = 0;
-    volatile transient int min = 0;
+    volatile int max = 0;
+    volatile int min = 0;
     final int id;
     private int iterations = 0;
-    transient boolean manConvenience = false;
-    transient boolean womanConvenience = false;
-    volatile transient float lastIterationTimeCompletion;
+    boolean manConvenience = false;
+    boolean womanConvenience = false;
+    volatile float lastIterationTimeCompletion;
 
     volatile double copulatingRatio = 0.30;
 

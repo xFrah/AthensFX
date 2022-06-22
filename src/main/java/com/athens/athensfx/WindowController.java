@@ -195,8 +195,8 @@ public class WindowController {
         cLabel.setText(String.valueOf(cNew));
     }
 
+    /** This method set's the population's data on the window */
     void setInfo(float[] values) {
-        //This method set's the population's data on the window
         int size = selectedPopulation.womenHolder.series.getData().size();
         if (size > 100) {
             xAxis.setLowerBound(size - 100);
