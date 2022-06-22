@@ -114,7 +114,7 @@ public class Population {
             int sizeWoman = womenHolder.alive.size();
             int lower = Math.min(sizeWoman, sizeMan);
             int span = (int) ((lower/2) * copulatingRatio);
-            max = tlr.nextInt(span, lower/2);
+            max = tlr.nextInt(span, (lower/2) + 1);
             min = max - span;
         }
 
@@ -129,7 +129,6 @@ public class Population {
                     updateBirthValues(); // every iteration update the birth values.
                     if (finished == 2) {
                         lastIterationTimeCompletion = System.currentTimeMillis() - start;
-                        // System.out.println("(" + min + ", " + max + ") = " + (max - min));
                         finished = 0;
                         iterations++;
                         randomInterval();
